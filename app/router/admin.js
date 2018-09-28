@@ -23,4 +23,8 @@ module.exports = app => {
   router.get('/admin/access/edit', controller.admin.access.edit);
   router.get('/admin/access/del', controller.admin.access.del);
 
+  router.get('/admin/login', controller.admin.user.login);
+  router.post('/admin/doLogin', controller.admin.user.doLogin);
+  router.get('/admin/logout', controller.admin.user.logout);
+  router.get('/verify', controller.admin.base.verify);// 验证码
 };

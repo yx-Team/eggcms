@@ -1,6 +1,12 @@
 {
   "extends": "eslint-config-egg",
   "rules": {
-    "linebreak-style":"off"
+    "linebreak-style":"off",
+    "no-undef":"off",
+    "strict":"off",
+    "no-var":"off",
+    "prefer-const":"off",
+    "no-unused-vars":"off",
+    "valid-jsdoc":"off"
   }
 }
