@@ -18,10 +18,8 @@ module.exports = (options, app) => {
       await next();
     } else {
       if (checkUrl(ctx)) {
-        console.log('----------------');
         await next();
       } else {
-        console.log('--------+++++++++++++++++--------');
         ctx.redirect('/admin/login');
       }
     }
