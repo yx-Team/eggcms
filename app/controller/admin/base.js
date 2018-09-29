@@ -27,6 +27,20 @@ class BaseController extends Controller {
     };
     return;
   }
+  // 分页
+  async page() {
+    // 获取 query
+    const { page, limit, model } = this.ctx.request.query;
+    const skip = (page - 1) * limit;
+    // 查询数据
+    const list = await this.ctx.model[model].find({}).limit(Number(limit)).skip(skip);
+    // 统计数据
+    const count = (await this.ctx.model[model].find({})).length;
+    return {
+      list,
+      count,
+    };
+  }
   // 公共的删除数据
   async delete() {
     // 获取query传过来的model

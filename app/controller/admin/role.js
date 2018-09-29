@@ -10,14 +10,15 @@ class RoleController extends BaseController {
       list,
     });
   }
+
   // 角色api列表
   async list() {
-    const list = await this.ctx.model.Role.find({}).sort({ _id: 1 });
+    const { list, count } = await this.page();
     if (list.length) {
       this.ctx.body = {
         code: 0,
         msg: '',
-        count: '100',
+        count,
         data: list,
       };
     } else {

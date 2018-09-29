@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,28 +13,17 @@
 
   <div class="layui-fluid">   
     <div class="layui-card">
-      <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+      <div class="layui-form layui-card-header">
         <div class="layui-form-item">
           <div class="layui-inline">
-            角色筛选
+            角色管理
           </div>
-          <div class="layui-inline">
-            <select name="rolename" lay-filter="LAY-user-adminrole-type">
-              <option value="-1">全部角色</option>
-              <option value="0">管理员</option>
-              <option value="1">超级管理员</option>
-              <option value="2">纠错员</option>
-              <option value="3">采购员</option>
-              <option value="4">推销员</option>
-              <option value="5">运营人员</option>
-              <option value="6">编辑</option>
-            </select>
-          </div>
+         
         </div>
       </div>
       <div class="layui-card-body">
         <div style="padding-bottom: 10px;">
-          <button class="layui-btn layuiadmin-btn-role" data-type="batchdel">删除</button>
+          <button class="layui-btn layuiadmin-btn-role" data-type="batchdel">批量删除</button>
           <button class="layui-btn layuiadmin-btn-role" data-type="add">添加</button>
         </div>
       
@@ -60,15 +47,6 @@
     ,form = layui.form
     ,table = layui.table;
     
-    //搜索角色
-    form.on('select(LAY-user-adminrole-type)', function(data){
-      //执行重载
-      table.reload('LAY-user-back-role', {
-        where: {
-          role: data.value
-        }
-      });
-    });
   
     //事件
     var active = {
@@ -83,7 +61,6 @@
         checkData.forEach(check => {
           ids.push(check._id)
         });
-        console.log(ids)
         layer.confirm('确定删除吗？', function(index) {
             
           //执行 Ajax 后重载

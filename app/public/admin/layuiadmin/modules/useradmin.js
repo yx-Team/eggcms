@@ -153,7 +153,7 @@ layui.define([ 'table', 'form' ], function(exports) {
   // 角色管理
   table.render({
     elem: '#LAY-user-back-role',
-    url: '/admin/role/list', // 模拟接口
+    url: '/admin/role/list?model=Role', // 模拟接口
     cols: [[
       { type: 'checkbox', fixed: 'left' },
       { field: '_id', width: 220, title: 'ID', sort: true },
@@ -162,6 +162,7 @@ layui.define([ 'table', 'form' ], function(exports) {
       { title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin' },
     ]],
     text: '对不起，加载出现异常！',
+    page: true,
   });
 
   // 监听工具条
