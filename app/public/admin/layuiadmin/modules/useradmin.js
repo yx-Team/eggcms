@@ -153,13 +153,12 @@ layui.define([ 'table', 'form' ], function(exports) {
   // 角色管理
   table.render({
     elem: '#LAY-user-back-role',
-    url: layui.setter.base + 'json/useradmin/role.js', // 模拟接口
+    url: '/admin/role/list', // 模拟接口
     cols: [[
       { type: 'checkbox', fixed: 'left' },
-      { field: 'id', width: 80, title: 'ID', sort: true },
-      { field: 'rolename', title: '角色名' },
-      { field: 'limits', title: '拥有权限' },
-      { field: 'descr', title: '具体描述' },
+      { field: '_id', width: 220, title: 'ID', sort: true },
+      { field: 'title', title: '角色名' },
+      { field: 'description', title: '具体描述' },
       { title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin' },
     ]],
     text: '对不起，加载出现异常！',
@@ -170,8 +169,17 @@ layui.define([ 'table', 'form' ], function(exports) {
     const data = obj.data;
     if (obj.event === 'del') {
       layer.confirm('确定删除此角色？', function(index) {
-        obj.del();
-        layer.close(index);
+        $.ajax({
+          url: '/admin/base/delete?model=Role&id=' + data._id,
+          success(res) {
+            if (res.success) {
+              obj.del();
+              layer.close(index);
+            }
+          },
+        });
+
+
       });
     } else if (obj.event === 'edit') {
       const tr = $(obj.tr);
@@ -179,7 +187,7 @@ layui.define([ 'table', 'form' ], function(exports) {
       layer.open({
         type: 2,
         title: '编辑角色',
-        content: '../../../views/user/administrators/roleform.html',
+        content: '/admin/role/edit?id=' + data._id,
         area: [ '500px', '480px' ],
         btn: [ '确定', '取消' ],
         yes(index, layero) {
@@ -191,9 +199,16 @@ layui.define([ 'table', 'form' ], function(exports) {
             const field = data.field; // 获取提交的字段
 
             // 提交 Ajax 成功后，静态更新表格中的数据
-            // $.ajax({});
-            table.reload('LAY-user-back-role'); // 数据刷新
-            layer.close(index); // 关闭弹层
+            $.ajax({
+              url: '/admin/role/doEdit',
+              method: 'POST',
+              data: field,
+              success(res) {
+                table.reload('LAY-user-back-role'); // 数据刷新
+                layer.close(index); // 关闭弹层
+              },
+            });
+
           });
 
           submit.trigger('click');

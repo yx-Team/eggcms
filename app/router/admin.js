@@ -14,9 +14,11 @@ module.exports = app => {
   router.get('/admin/manager/del', controller.admin.manager.del);
 
   router.get('/admin/role', controller.admin.role.index);
+  router.get('/admin/role/list', controller.admin.role.list);
   router.get('/admin/role/add', controller.admin.role.add);
+  router.post('/admin/role/doAdd', controller.admin.role.doAdd);
   router.get('/admin/role/edit', controller.admin.role.edit);
-  router.get('/admin/role/del', controller.admin.role.del);
+  router.post('/admin/role/doEdit', controller.admin.role.doEdit);
 
   router.get('/admin/access', controller.admin.access.index);
   router.get('/admin/access/add', controller.admin.access.add);
@@ -26,5 +28,8 @@ module.exports = app => {
   router.get('/admin/login', controller.admin.user.login);
   router.post('/admin/doLogin', controller.admin.user.doLogin);
   router.get('/admin/logout', controller.admin.user.logout);
+  // base
   router.get('/verify', controller.admin.base.verify);// 验证码
+  router.get('/admin/base/delete', controller.admin.base.delete);// 删除数据
+  router.get('/admin/base/deleteMany', controller.admin.base.deleteMany);// 批量删除
 };

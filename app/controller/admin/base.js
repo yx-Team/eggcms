@@ -9,6 +9,7 @@ class BaseController extends Controller {
     this.ctx.response.type = 'image/svg+xml';
     this.ctx.body = captcha.data;
   }
+  // 错误处理
   error(msg) {
     this.ctx.body = {
       success: false,
@@ -16,13 +17,35 @@ class BaseController extends Controller {
     };
     return;
   }
-  success(msg, data = []) {
+  // 成功处理
+  success(msg, data = [], redirect = '') {
     this.ctx.body = {
       success: true,
       success_msg: msg,
       data,
+      redirect,
     };
     return;
+  }
+  // 公共的删除数据
+  async delete() {
+    // 获取query传过来的model
+    const model = this.ctx.request.query.model;
+    // 获取id
+    const id = this.ctx.request.query.id;
+    // 根据id删除对应模型数据
+    const result = await this.ctx.model[model].deleteOne({ _id: id });
+    this.success('删除成功');
+  }
+  // 批量删除
+  async deleteMany() {
+    // 获取query传过来的model
+    const model = this.ctx.request.query.model;
+    // 将获取到的ids转为数组 { ids: '5baf2885f772080500697b4e|5baf288ff772080500697b4f|5baf2898f772080500697b50|5baf32efbeb0b235cc607c1e|5baf32f3beb0b235cc607c1f' }
+    var ids = this.ctx.request.query.ids.split('|');
+    // 删除多条数据
+    const result = await this.ctx.model[model].remove({ _id: { $in: ids } });
+    this.success('删除成功');
   }
 }
 

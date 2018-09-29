@@ -11,7 +11,7 @@ module.exports = app => {
       type: Number,
       default: 1,
     },
-    role_id: { type: String },
+    role_id: { type: Schema.Types.ObjectId }, // 设置_id类型
     add_time: {
       type: String,
       default: addTime,
