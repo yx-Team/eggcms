@@ -102,6 +102,12 @@
                     if (res.success) {
                       table.reload('LAY-user-back-role');
                       layer.close(index); //关闭弹层
+                    }else{
+                      layer.msg(res.error_msg, {
+                        offset: '15px',
+                        icon: 2,
+                        time: 1000
+                      });
                     }
 
 

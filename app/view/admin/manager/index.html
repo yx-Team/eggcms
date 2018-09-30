@@ -146,7 +146,6 @@
           ,area: ['420px', '470px']
           ,btn: ['确定', '取消']
           ,yes: function(index, layero){
-            console.log('test')
             var iframeWindow = window['layui-layer-iframe'+ index]
             ,submitID = 'LAY-manager-back-submit'
             ,submit = layero.find('iframe').contents().find('#'+ submitID);
@@ -154,16 +153,24 @@
             //监听提交
             iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
               var field = data.field; //获取提交的字段
-              console.log(field)
               //提交 Ajax 成功后，静态更新表格中的数据
               $.ajax({
                 url:"/admin/manager/doAdd",
                 method:"POST",
                 data:field,
                 success:function(res){
-                  console.log(res)
-                  table.reload('LAY-user-back-manage'); //数据刷新
-                  layer.close(index); //关闭弹层
+                  if(res.success){
+                    table.reload('LAY-user-back-manage'); //数据刷新
+                    layer.close(index); //关闭弹层
+                  }else{
+                    layer.msg(res.error_msg, {
+                        offset: '15px',
+                        icon: 2,
+                        time: 1000
+                      });
+                  }
+                  
+                  
                 }
               });
               

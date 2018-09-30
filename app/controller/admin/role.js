@@ -15,6 +15,11 @@ class RoleController extends BaseController {
   // 添加角色
   async doAdd() {
     const roleForm = this.ctx.request.body;
+    const hasOne = await this.ctx.model.Role.find({ title: roleForm.title });
+    if (hasOne.length) {
+      this.error('角色已存在，请勿重复添加');
+      return;
+    }
     const role = new this.ctx.model.Role(roleForm);
     const result = await role.save();
     this.success('添加成功');

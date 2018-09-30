@@ -10,6 +10,7 @@ module.exports = appInfo => {
     maxAge: 3600 * 1000, // 1 小时
     httpOnly: true,
     encrypt: true,
+    renew: true, // 延迟有效期
   };
   // mongoose
   config.mongoose = {
