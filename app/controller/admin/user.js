@@ -24,8 +24,11 @@ class UserController extends BaseController {
     console.log(result);
     if (result.length) {
       let userinfo = result[0];
+      if (userinfo.status === 0) {
+        this.error('禁止登录，请联系管理员');
+        return;
+      }
       userinfo.password = null;
-      console.log(userinfo);
       this.ctx.session.userinfo = userinfo;
       this.success('登录成功');
     } else {
