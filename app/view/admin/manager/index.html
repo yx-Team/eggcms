@@ -117,7 +117,10 @@
         if(checkData.length === 0){
           return layer.msg('请选择数据');
         }
-        
+        var ids = []
+          checkData.forEach(check => {
+            ids.push(check._id)
+          });
         layer.prompt({
           formType: 1
           ,title: '敏感操作，请验证口令'
@@ -126,15 +129,15 @@
           
           layer.confirm('确定删除吗？', function(index) {
             
-            //执行 Ajax 后重载
-            /*
-            admin.req({
-              url: 'xxx'
-              //,……
-            });
-            */
-            table.reload('LAY-user-back-manage');
-            layer.msg('已删除');
+            $.ajax({
+              url: '/admin/base/deleteMany?model=Admin',
+              data: { ids: ids.join('|') },
+              success: function (res) {
+                table.reload('LAY-user-back-manage');
+                layer.msg('已删除');
+              }
+            })
+           
           });
         }); 
       }
@@ -152,7 +155,9 @@
 
             //监听提交
             iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
+              
               var field = data.field; //获取提交的字段
+              console.log(field)
               //提交 Ajax 成功后，静态更新表格中的数据
               $.ajax({
                 url:"/admin/manager/doAdd",

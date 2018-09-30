@@ -4,7 +4,7 @@ module.exports = app => {
   const addTime = new Date().getTime().toString();
   const AdminSchema = Schema({
     username: { type: String, unique: true },
-    password: { type: String },
+    password: { type: String, require: true },
     mobile: { type: String },
     email: { type: String },
     status: {

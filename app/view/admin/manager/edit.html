@@ -16,25 +16,25 @@
     <div class="layui-form-item">
       <label class="layui-form-label">登录名</label>
       <div class="layui-input-inline">
-        <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        <input type="text" name="username" lay-verify="required" disabled readonly placeholder="请输入用户名" autocomplete="off" class="layui-input" value="<%=user.username%>">
       </div>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">密码</label>
       <div class="layui-input-inline">
-        <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        <input type="password" name="password"  placeholder="请输入密码" autocomplete="off" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">手机</label>
       <div class="layui-input-inline">
-        <input type="text" name="mobile"  placeholder="请输入号码" autocomplete="off" class="layui-input">
+        <input type="text" name="mobile"  placeholder="请输入号码" autocomplete="off" class="layui-input"  value="<%=user.mobile%>">
       </div>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">邮箱</label>
       <div class="layui-input-inline">
-        <input type="text" name="email"  placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+        <input type="text" name="email"  placeholder="请输入邮箱" autocomplete="off" class="layui-input" value="<%=user.email%>">
       </div>
     </div>
     <div class="layui-form-item">
@@ -44,7 +44,11 @@
           
           <option value=""></option>
           <%role.forEach(item=>{%>
-          <option value="<%=item._id%>"><%=item.title%></option>
+            <%if(item._id.toString()==user.role_id){%>
+              <option value="<%=item._id%>" selected><%=item.title%></option>
+            <%} else {%>
+              <option value="<%=item._id%>"><%=item.title%></option>
+            <%}%>
           <%})%>
         </select>
       </div>
@@ -52,12 +56,16 @@
     <div class="layui-form-item">
       <label class="layui-form-label">状态</label>
       <div class="layui-input-inline">
-        <input type="checkbox" lay-filter="switch" name="status" lay-skin="switch" value="1" checked lay-text="启用|禁用">
+        <%if(user.status==1){%>
+        <input type="checkbox" lay-filter="switch" name="status" lay-skin="switch" value="<%=user.status%>" checked lay-text="启用|禁用">
+        <%}else{%>
+          <input type="checkbox" lay-filter="switch" name="status" lay-skin="switch" value="<%=user.status%>" lay-text="启用|禁用">
+        <%}%>
       </div>
     </div>
     <div class="layui-form-item layui-hide">
       <input type="hidden" name="_csrf" value="<%=csrf%>">
-      <input type="button" lay-submit lay-filter="LAY-manager-back-submit" id="LAY-manager-back-submit" value="确认">
+      <input type="button" lay-submit lay-filter="LAY-manager-edit-back-submit" id="LAY-manager-edit-back-submit" value="确认">
     </div>
   </div>
 

@@ -112,23 +112,29 @@ layui.define([ 'table', 'form' ], function(exports) {
       }, function(value, index) {
         layer.close(index);
         layer.confirm('确定删除此管理员？', function(index) {
-          console.log(obj);
-          obj.del();
-          layer.close(index);
+          $.ajax({
+            url: '/admin/base/delete?model=Admin&id=' + data._id,
+            success(res) {
+              if (res.success) {
+                obj.del();
+                layer.close(index);
+              }
+            },
+          });
+
         });
       });
     } else if (obj.event === 'edit') {
       const tr = $(obj.tr);
-
       layer.open({
         type: 2,
         title: '编辑管理员',
-        content: '../../../views/user/administrators/adminform.html',
-        area: [ '420px', '420px' ],
+        content: '/admin/manager/edit?id=' + data._id,
+        area: [ '420px', '470px' ],
         btn: [ '确定', '取消' ],
         yes(index, layero) {
           let iframeWindow = window['layui-layer-iframe' + index],
-            submitID = 'LAY-user-back-submit',
+            submitID = 'LAY-manager-edit-back-submit',
             submit = layero.find('iframe').contents().find('#' + submitID);
 
           // 监听提交
@@ -136,9 +142,17 @@ layui.define([ 'table', 'form' ], function(exports) {
             const field = data.field; // 获取提交的字段
 
             // 提交 Ajax 成功后，静态更新表格中的数据
-            // $.ajax({});
-            table.reload('LAY-user-front-submit'); // 数据刷新
-            layer.close(index); // 关闭弹层
+            $.ajax({
+              url: '/admin/manager/doEdit',
+              method: 'POST',
+              data: field,
+              success(res) {
+                console.log(res);
+                table.reload('LAY-user-back-manage'); // 数据刷新
+                layer.close(index); // 关闭弹层
+              },
+            });
+
           });
 
           submit.trigger('click');
