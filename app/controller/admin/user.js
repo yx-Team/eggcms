@@ -20,19 +20,17 @@ class UserController extends BaseController {
       return;
     }
     // 查询数据库
-    console.log(username, md5(password));
-    await this.ctx.model.Admin.findOne({ username, password: md5(password) }, (err, doc) => {
-      if (err) {
-        this.error(err);
-      }
-      if (doc) {
-        this.ctx.session.userinfo = username;
-        this.success('登录成功');
-      } else {
-        this.error('用户名或密码错误');
-      }
-      return;
-    });
+    const result = await this.ctx.model.Admin.find({ username, password: md5(password) });
+    console.log(result);
+    if (result.length) {
+      let userinfo = result[0];
+      userinfo.password = null;
+      console.log(userinfo);
+      this.ctx.session.userinfo = userinfo;
+      this.success('登录成功');
+    } else {
+      this.error('用户名或密码错误');
+    }
   }
   // 注销
   async logout() {
