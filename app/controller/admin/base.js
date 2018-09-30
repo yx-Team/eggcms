@@ -36,10 +36,17 @@ class BaseController extends Controller {
     const list = await this.ctx.model[model].find({}).limit(Number(limit)).skip(skip);
     // 统计数据
     const count = (await this.ctx.model[model].find({})).length;
-    return {
-      list,
-      count,
-    };
+
+    if (list.length) {
+      this.ctx.body = {
+        code: 0,
+        msg: '',
+        count,
+        data: list,
+      };
+    } else {
+      this.ctx.body = { code: 1, msg: '暂无数据' };
+    }
   }
   // 公共的删除数据
   async delete() {

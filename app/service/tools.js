@@ -2,6 +2,7 @@
 
 const Service = require('egg').Service;
 const svgCaptcha = require('svg-captcha');
+const md5 = require('md5');
 
 class ToolsService extends Service {
   /**
@@ -27,6 +28,13 @@ class ToolsService extends Service {
     var captcha = svgCaptcha.create(opt);
     this.ctx.session.captcha = captcha.text;
     return captcha;
+  }
+  /**
+   * md5 加密
+   * @param {*} params
+   */
+  async md5(params) {
+    return md5(params);
   }
 }
 

@@ -5,25 +5,8 @@ const BaseController = require('./base');
 class RoleController extends BaseController {
   // 显示角色列表界面
   async index() {
-    const list = this.ctx.model.Role.find({});
-    await this.ctx.render('admin/role/index', {
-      list,
-    });
-  }
-
-  // 角色api列表
-  async list() {
-    const { list, count } = await this.page();
-    if (list.length) {
-      this.ctx.body = {
-        code: 0,
-        msg: '',
-        count,
-        data: list,
-      };
-    } else {
-      this.ctx.body = { code: 1, msg: '暂无数据' };
-    }
+    // const list = this.ctx.model.Role.find({});
+    await this.ctx.render('admin/role/index');
   }
   // 添加角色界面
   async add() {
