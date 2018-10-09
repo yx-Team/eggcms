@@ -92,8 +92,6 @@ class ManagerController extends BaseController {
     } else {
       form.password = await this.ctx.service.tools.md5(form.password);
     }
-
-    console.log(form);
     const result = await this.ctx.model.Admin.updateOne({ username: form.username }, form);
     this.success('更新成功');
 

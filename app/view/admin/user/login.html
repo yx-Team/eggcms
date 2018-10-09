@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="/public/admin/layuiadmin/layui/css/layui.css" media="all">
   <link rel="stylesheet" href="/public/admin/layuiadmin/style/admin.css" media="all">
   <link rel="stylesheet" href="/public/admin/layuiadmin/style/login.css" media="all">
+  <style>
+      input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px white inset;
+      }
+      </style>
 </head>
 <body>
 
@@ -83,7 +88,7 @@
       //请求登入接口
       $.ajax({
         method:"POST",
-        url: '/admin/doLogin?_csrf=<%=csrf%>',
+        url: '/admin/login?_csrf=<%=csrf%>',
         data: obj.field,
         success: function(res){
           if(res.success){

@@ -24,11 +24,12 @@ module.exports = app => {
 
   router.get('/admin/access', controller.admin.access.index);
   router.get('/admin/access/add', controller.admin.access.add);
+  router.post('/admin/access/add', controller.admin.access.add);
   router.get('/admin/access/edit', controller.admin.access.edit);
-  router.get('/admin/access/del', controller.admin.access.del);
+  router.post('/admin/access/edit', controller.admin.access.edit);
 
   router.get('/admin/login', controller.admin.user.login);
-  router.post('/admin/doLogin', controller.admin.user.doLogin);
+  router.post('/admin/login', controller.admin.user.login);
   router.get('/admin/logout', controller.admin.user.logout);
   // base
   router.get('/verify', controller.admin.base.verify);// 验证码

@@ -19,9 +19,62 @@
         <div class="layui-card">
           <div class="layui-card-header">权限列表</div>
           <div class="layui-card-body">
-            
-              权限列表
-            
+            <a class="layui-btn layui-btn-normal accessAdd">添加</a>
+            <table class="layui-table">
+              <colgroup>
+                <col width="200">
+                <col width="200">
+                <col width="80">
+                <col width="80">
+                <col>
+                <col width="150">
+                <col>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>节点名称</th>
+                  <th>操作地址</th>
+                  <th>类型</th>
+                  <th>排序</th>
+                  <th>描述</th>
+                  <th>操作</th>
+                </tr> 
+              </thead>
+              <tbody>
+                <%for(var i=0;i<accessList.length;i++){%>
+                 
+                    <tr>
+                      
+                      <td><%=accessList[i].action_name%></td>
+                      <td><%=accessList[i].url%></td>
+                      <td><%-helper.typeFormat(accessList[i].type)%></td>
+                      <td><%=accessList[i].sort%></td>
+                      <td><%=accessList[i].description%></td>
+                      <td>
+                          <a class="layui-btn layui-btn-normal layui-btn-xs editBtn" data-id="<%=accessList[i]._id%>"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                          <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-id="<%=accessList[i]._id%>" ><i class="layui-icon layui-icon-delete"></i>删除</a>
+                      </td>
+                    </tr>
+                  <%if(accessList[i].items.length){%>
+                    <%for(var j=0;j<accessList[i].items.length;j++){%>
+                    <tr>
+                       
+                        <td>├───<%=accessList[i].items[j].action_name%></td>
+                        <td><%=accessList[i].items[j].url%></td>
+                        <td><%-helper.typeFormat(accessList[i].items[j].type)%></td>
+                        <td><%=accessList[i].items[j].sort%></td>
+                        <td><%=accessList[i].items[j].description%></td>
+                        <td>
+                            <a class="layui-btn layui-btn-normal layui-btn-xs editBtn" data-id="<%=accessList[i].items[j]._id%>"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+                            <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-id="<%=accessList[i].items[j]._id%>" ><i class="layui-icon layui-icon-delete"></i>删除</a>
+                        </td>
+                      </tr>
+                      <%}%>  
+                  <%}%>  
+                <%}%>
+                
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -31,11 +84,117 @@
   
   <script src="/public/admin/layuiadmin/layui/layui.js"></script>  
   <script>
-  layui.config({
-    base: '/public/admin/layuiadmin/' //静态资源所在路径
-  }).extend({
-    index: 'lib/index' //主入口模块
-  }).use(['manager']);
+    layui.config({
+        base: '/public/admin/layuiadmin/' //静态资源所在路径
+      }).extend({
+        index: 'lib/index' //主入口模块
+      }).use(['index', 'useradmin', 'table'], function () {
+        var $ = layui.$
+          , form = layui.form
+          , table = layui.table;
+
+        $('.accessAdd').click(function () {
+          layer.open({
+            type: 2
+            , title: '增加权限'
+            , content: '/admin/access/add'
+            , area: ['420px', '570px']
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+              var iframeWindow = window['layui-layer-iframe' + index]
+                , submitID = 'LAY-access-back-submit'
+                , submit = layero.find('iframe').contents().find('#' + submitID);
+
+              //监听提交
+              iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+
+                var field = data.field; //获取提交的字段
+                console.log(field)
+                //提交 Ajax 成功后，静态更新表格中的数据
+                $.ajax({
+                  url: "/admin/access/add",
+                  method: "POST",
+                  data: field,
+                  success: function (res) {
+                    if (res.success) {
+                      window.location.reload()
+                      layer.close(index); //关闭弹层
+                    } else {
+                      layer.msg(res.error_msg, {
+                        offset: '15px',
+                        icon: 2,
+                        time: 1000
+                      });
+                    }
+                  }
+                });
+              });
+              submit.trigger('click');
+            }
+          });
+        })
+        $('.delBtn').click(function () {
+          var id = $(this).data('id')
+          var _this = this;
+          layer.confirm('确定删除吗？', function (index) {
+            $.ajax({
+              url: '/admin/base/delete?model=Access',
+              data: { id: id },
+              success: function (res) {
+                if (res.success) {
+                  $(_this).parents('tr').remove();
+                  layer.msg(res.success_msg);
+                  return;
+                } else {
+                  layer.msg('删除失败');
+                }
+              }
+            })
+          });
+        })
+        $('.editBtn').click(function(){
+          var id = $(this).data('id')
+          var _this = this;
+          layer.open({
+            type: 2
+            , title: '增加权限'
+            , content: '/admin/access/edit?id='+id
+            , area: ['420px', '570px']
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+              var iframeWindow = window['layui-layer-iframe' + index]
+                , submitID = 'LAY-access-back-submit'
+                , submit = layero.find('iframe').contents().find('#' + submitID);
+
+              //监听提交
+              iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+
+                var field = data.field; //获取提交的字段
+                
+                //提交 Ajax 成功后，静态更新表格中的数据
+                $.ajax({
+                  url: "/admin/access/edit",
+                  method: "POST",
+                  data: field,
+                  success: function (res) {
+                    if (res.success) {
+                      window.location.reload()
+                      layer.close(index); //关闭弹层
+                    } else {
+                      layer.msg(res.error_msg, {
+                        offset: '15px',
+                        icon: 2,
+                        time: 1000
+                      });
+                    }
+                  }
+                });
+              });
+              submit.trigger('click');
+            }
+          });
+        })
+      });
   </script>
 </body>
 </html>
