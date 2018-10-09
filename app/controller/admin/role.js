@@ -36,6 +36,10 @@ class RoleController extends BaseController {
     const result = await this.ctx.model.Role.updateOne({ _id: role._id }, role);
     this.success('修改成功');
   }
+  // 授权
+  async auth(){
+    await this.ctx.render('/admin/role/auth');
+  }
 
 }
 

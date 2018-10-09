@@ -173,7 +173,7 @@ layui.define([ 'table', 'form' ], function(exports) {
       { field: '_id', width: 220, title: 'ID', sort: true },
       { field: 'title', title: '角色名' },
       { field: 'description', title: '具体描述' },
-      { title: '操作', width: 150, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin' },
+      { title: '操作', width: 220, align: 'center', fixed: 'right', toolbar: '#table-useradmin-admin' },
     ]],
     text: '对不起，加载出现异常！',
     page: true,
@@ -232,6 +232,8 @@ layui.define([ 'table', 'form' ], function(exports) {
 
         },
       });
+    } else if(obj.event === 'auth'){
+      window.location.href="/admin/role/auth?id="+data._id
     }
   });
 

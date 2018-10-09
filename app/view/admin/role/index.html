@@ -31,6 +31,8 @@
 
         <table id="LAY-user-back-role" lay-filter="LAY-user-back-role"></table>
         <script type="text/html" id="table-useradmin-admin">
+          
+          <a class="layui-btn layui-btn-default layui-btn-xs" lay-event="auth" data-id="{{d._id}}"><i class="layui-icon layui-icon-auz"></i>授权</a>
           <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" data-id="{{d._id}}"><i class="layui-icon layui-icon-edit"></i>编辑</a>
           <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" data-id="{{d._id}}"><i class="layui-icon layui-icon-delete"></i>删除</a>
         </script>
