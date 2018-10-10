@@ -37,8 +37,23 @@ class RoleController extends BaseController {
     this.success('修改成功');
   }
   // 授权
-  async auth(){
-    await this.ctx.render('/admin/role/auth');
+  async auth() {
+    const accessList = await this.ctx.model.Access.aggregate([
+      {
+        $lookup: {
+          from: 'access',
+          localField: '_id',
+          foreignField: 'module_id',
+          as: 'items',
+        },
+      },
+      {
+        $match: { module_id: '0' },
+      },
+
+    ]);
+    console.log(accessList);
+    await this.ctx.render('/admin/role/auth', { accessList });
   }
 
 }

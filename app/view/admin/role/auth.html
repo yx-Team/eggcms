@@ -2,55 +2,86 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>auth</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <link rel="stylesheet" href="/public/admin/layuiadmin/layui/css/layui.css" media="all">
-  <link rel="stylesheet" href="/public/admin/layuiadmin/style/admin.css" media="all">
+	<meta charset="utf-8">
+	<title>auth</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="/public/admin/layuiadmin/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="/public/admin/layuiadmin/style/admin.css" media="all">
+	<style>
+		.layui-form-item{
+			margin-bottom: 8px;
+		}
+	</style>
 </head>
 
 <body>
 
-  <div class="layui-fluid">
-    <div class="layui-card">
-      <div class="layui-form layui-card-header">
-        <div class="layui-form-item">
-          <div class="layui-inline">
-            角色授权
-          </div>
+	<div class="layui-fluid">
+		<div class="layui-card">
+			<div class="layui-form layui-card-header">
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						角色授权
+					</div>
 
-        </div>
-      </div>
-      <div class="layui-card-body">
-        <div style="padding-bottom: 10px;">
-          <button class="layui-btn backBtn"><i class="layui-icon layui-icon-return"></i>返回</button>
-          
-        </div>
+				</div>
+			</div>
+			<div class="layui-card-body">
+				<div style="padding-bottom: 10px;">
+					<button class="layui-btn backBtn"><i class="layui-icon layui-icon-return"></i>返回</button>
 
-        
-      </div>
-    </div>
-  </div>
+				</div>
+				<div style="padding-top: 10px;" class=" layui-form">
+					<table class="layui-table" lay-size="sm">
+						<tbody>
+							<%for(var i=0;i<accessList.length;i++){%>
+								<tr>
+									<td>
+										<div class="layui-form-item">
+											<input type="checkbox" name="like1[write]" lay-skin="primary" title="【<%-helper.typeFormat(accessList[i].type)%>】<%=accessList[i].name%>">
+										</div>
+									</td>
+								</tr>
+								<%if(accessList[i].items.length){%>
+								<tr>
+									<td>
+										<div class="layui-form-item" style="padding-left:50px;">
+											<%for(var j=0;j<accessList[i].items.length;j++){%>
+											<input type="checkbox" name="like1[write]" lay-skin="primary" title="【<%-helper.typeFormat(accessList[i].items[j].type)%>】<%=accessList[i].items[j].name%>">
+											<%}%>
+										</div>
 
-  <script src="/public/admin/layuiadmin/layui/layui.js"></script>
-  <script>
-    layui.config({
-      base: '/public/admin/layuiadmin/' //静态资源所在路径
-    }).extend({
-      index: 'lib/index' //主入口模块
-    }).use(['index'], function () {
-      var $ = layui.$, form = layui.form;
-      
+									</td>
+								</tr>
+								<%}%>
+							<%}%>
+						</tbody>
+					</table>
+				</div>
 
-      $('.backBtn').on('click',function () {
-        history.go(-1)
-        })
+			</div>
+		</div>
+	</div>
 
-     
-    });
-  </script>
+	<script src="/public/admin/layuiadmin/layui/layui.js"></script>
+	<script>
+		layui.config({
+			base: '/public/admin/layuiadmin/' //静态资源所在路径
+		}).extend({
+			index: 'lib/index' //主入口模块
+		}).use(['index', 'form'], function () {
+			var $ = layui.$, form = layui.form;
+
+
+			$('.backBtn').on('click', function () {
+				history.go(-1)
+			})
+
+
+		});
+	</script>
 </body>
 
 </html>

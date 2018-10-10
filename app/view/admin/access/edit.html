@@ -47,7 +47,7 @@
           <option <%=accessInfo.module_id==='0'?'selected':''%> value="0" >--顶级模块--</option>
           <%for(var i=0;i<moduleList.length;i++){%>
               <%=accessInfo.module_id.toString()%>
-          <option <%=accessInfo.module_id.toString()==moduleList[i]._id?'selected':''%> value="<%=moduleList[i]._id%>"><%=moduleList[i].name%> </option>
+          <option <%=accessInfo.module_id.toString()==moduleList[i]._id?'selected':''%> value="<%=moduleList[i]._id%>"><%if(moduleList[i].prefix){%>├<%}%><%=moduleList[i].prefix%><%=moduleList[i].name%> </option>
           <%}%>
         </select>
       </div>

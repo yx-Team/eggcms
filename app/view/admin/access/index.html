@@ -22,6 +22,7 @@
             <a class="layui-btn layui-btn-normal accessAdd">添加</a>
             <table class="layui-table">
               <colgroup>
+                <col width="80">
                 <col width="200">
                 <col width="200">
                 <col width="80">
@@ -32,6 +33,7 @@
               </colgroup>
               <thead>
                 <tr>
+                  <th>序号</th>
                   <th>节点名称</th>
                   <th>操作地址</th>
                   <th>类型</th>
@@ -42,10 +44,9 @@
               </thead>
               <tbody>
                 <%for(var i=0;i<accessList.length;i++){%>
-                 
                     <tr>
-                      
-                      <td><%=accessList[i].action_name%></td>
+                      <td><%=i+1%></td>
+                      <td><%if(accessList[i].prefix){%>├<%}%><%=accessList[i].prefix%><%=accessList[i].action_name%></td>
                       <td><%=accessList[i].url%></td>
                       <td><%-helper.typeFormat(accessList[i].type)%></td>
                       <td><%=accessList[i].sort%></td>
@@ -55,22 +56,6 @@
                           <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-id="<%=accessList[i]._id%>" ><i class="layui-icon layui-icon-delete"></i>删除</a>
                       </td>
                     </tr>
-                  <%if(accessList[i].items.length){%>
-                    <%for(var j=0;j<accessList[i].items.length;j++){%>
-                    <tr>
-                       
-                        <td>├───<%=accessList[i].items[j].action_name%></td>
-                        <td><%=accessList[i].items[j].url%></td>
-                        <td><%-helper.typeFormat(accessList[i].items[j].type)%></td>
-                        <td><%=accessList[i].items[j].sort%></td>
-                        <td><%=accessList[i].items[j].description%></td>
-                        <td>
-                            <a class="layui-btn layui-btn-normal layui-btn-xs editBtn" data-id="<%=accessList[i].items[j]._id%>"><i class="layui-icon layui-icon-edit"></i>编辑</a>
-                            <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-id="<%=accessList[i].items[j]._id%>" ><i class="layui-icon layui-icon-delete"></i>删除</a>
-                        </td>
-                      </tr>
-                      <%}%>  
-                  <%}%>  
                 <%}%>
                 
               </tbody>
@@ -81,7 +66,6 @@
       
     </div>
   </div>
-  
   <script src="/public/admin/layuiadmin/layui/layui.js"></script>  
   <script>
     layui.config({

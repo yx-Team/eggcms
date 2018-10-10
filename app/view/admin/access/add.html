@@ -46,7 +46,7 @@
         <select name="module_id" lay-verify="">
           <option value="0" selected>--顶级模块--</option>
           <%for(var i=0;i<moduleList.length;i++){%>
-          <option value="<%=moduleList[i]._id%>"><%=moduleList[i].name%></option>
+          <option value="<%=moduleList[i]._id%>"><%if(moduleList[i].prefix){%>├<%}%><%=moduleList[i].prefix%><%=moduleList[i].name%></option>
           <%}%>
         </select>
       </div>
