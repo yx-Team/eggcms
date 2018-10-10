@@ -23,7 +23,8 @@ module.exports = appInfo => {
   // mongoose
   config.mongoose = {
     client: {
-      url: 'mongodb://127.0.0.1:27017/cmsdb',
+       url: 'mongodb://127.0.0.1:27017/cmsdb',
+      //url: 'mongodb://test:du123456@ds127843.mlab.com:27843/cmsdb',
       options: {},
     },
   };

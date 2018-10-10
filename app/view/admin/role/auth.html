@@ -29,11 +29,7 @@
 				</div>
 			</div>
 			<div class="layui-card-body">
-				<div style="padding-bottom: 10px;">
-					<button class="layui-btn backBtn"><i class="layui-icon layui-icon-return"></i>返回</button>
-
-				</div>
-				<div style="padding-top: 10px;" class=" layui-form">
+				<div class=" layui-form">
 					<table class="layui-table" lay-size="sm">
 						<tbody>
 							<%for(var i=0;i<accessList.length;i++){%>
@@ -49,7 +45,7 @@
 									<td>
 										<div class="layui-form-item" style="padding-left:50px;">
 											<%for(var j=0;j<accessList[i].items.length;j++){%>
-											<input type="checkbox" name="node[]"  value="<%=accessList[i]._id%>" <%if(roleAccessList.indexOf(accessList[i]._id.toString())>-1){%>checked=''<%}%> lay-skin="primary" title="【<%-helper.typeFormat(accessList[i].items[j].type)%>】<%=accessList[i].items[j].name%>">
+											<input type="checkbox" name="node[]"  value="<%=accessList[i].items[j]._id%>" <%if(roleAccessList.indexOf(accessList[i].items[j]._id.toString())>-1){%>checked=''<%}%> lay-skin="primary" title="【<%-helper.typeFormat(accessList[i].items[j].type)%>】<%=accessList[i].items[j].name%> <%-roleAccessList.indexOf(accessList[i].items[j]._id.toString())%>">
 											<%}%>
 										</div>
 
@@ -59,10 +55,11 @@
 							<%}%>
 						</tbody>
 					</table>
-					<div class="layui-form-item">
+					<div class="layui-form-item" style="padding-top: 10px;">
 						<input type="hidden" name="_id" value="<%=_id%>">
 						<input type="hidden" name="_csrf" value="<%=csrf%>">
-							<button class="layui-btn" lay-submit lay-filter="authSubmit">立即提交</button>
+							<button class="layui-btn" lay-submit lay-filter="authSubmit">立即授权</button>
+							<button class="layui-btn  layui-btn-primary backBtn">返回上一页</button>
 					</div>
 				</div>
 
@@ -91,7 +88,13 @@
 					data:data.field,
 					dataType:'json',
 					success:function(res){
-						console.log(res)
+						if(res.success){
+							layer.msg(res.success_msg, {
+								time: 500
+							},function () { 
+								window.location.href="/admin/role"
+							 });
+						}
 					}
 				})
 				return false;

@@ -1,7 +1,7 @@
-{"_id":{"$oid":"5bbc427d71bc00263023616c"},"type":1,"status":true,"sort":3,"add_time":"1539063330401","name":"网站权限","action_name":"网站权限","url":"","module_id":"0","description":"","__v":0}
-{"_id":{"$oid":"5bbc430d71bc00263023616e"},"type":1,"status":true,"sort":2,"add_time":"1539063330401","name":"用户","action_name":"用户","url":"","module_id":"0","description":"","__v":0}
+{"_id":{"$oid":"5bbc427d71bc00263023616c"},"type":1,"status":true,"sort":100,"add_time":"1539063330401","name":"网站权限","action_name":"网站权限","url":"","module_id":"0","description":"","__v":0}
+{"_id":{"$oid":"5bbc430d71bc00263023616e"},"type":1,"status":true,"sort":100,"add_time":"1539063330401","name":"用户","action_name":"用户","url":"","module_id":"0","description":"","__v":0}
 {"_id":{"$oid":"5bbc457b6df8da382cbcdfd8"},"type":2,"status":true,"sort":101,"add_time":"1539065117490","name":"权限管理","action_name":"权限管理","url":"/admin/access","module_id":{"$oid":"5bbc427d71bc00263023616c"},"description":"权限管理列表","__v":0}
-{"_id":{"$oid":"5bbc4a64be7ec21ed8059f35"},"type":3,"status":true,"sort":103,"add_time":"1539066258701","name":"增加权限","action_name":"增加权限","url":"/admin/access/add","module_id":{"$oid":"5bbc457b6df8da382cbcdfd8"},"description":"增加权限界面","__v":0}
+{"_id":{"$oid":"5bbc4a64be7ec21ed8059f35"},"type":3,"status":true,"sort":103,"add_time":"1539066258701","name":"增加权限","action_name":"增加权限","url":"/admin/access/add","module_id":{"$oid":"5bbc427d71bc00263023616c"},"description":"增加权限界面","__v":0}
 {"_id":{"$oid":"5bbc514284f4431fe8061759"},"type":2,"status":true,"sort":100,"add_time":"1539067124827","name":"后台管理员","action_name":"后台管理员","url":"/admin/manager","module_id":{"$oid":"5bbc430d71bc00263023616e"},"description":"后台管理员列表","__v":0}
 {"_id":{"$oid":"5bbc516884f4431fe806175a"},"type":2,"status":true,"sort":100,"add_time":"1539067124827","name":"角色管理","action_name":"角色管理","url":"/admin/role","module_id":{"$oid":"5bbc430d71bc00263023616e"},"description":"角色管理列表","__v":0}
 {"_id":{"$oid":"5bbda14fca062c19f04a3bf7"},"type":1,"status":true,"sort":1,"add_time":"1539153625131","name":"主页","action_name":"主页","url":"","module_id":"0","description":"","__v":0}

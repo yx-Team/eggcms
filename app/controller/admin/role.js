@@ -47,16 +47,19 @@ class RoleController extends BaseController {
           access_id: item,
         });
       });
-      // 先删除
-      await this.ctx.model.RoleAccess.deleteMany({ role_id: _id });
-      // 再添加
-      var _this = this;
-      await this.ctx.model.RoleAccess.create(...data, function(err, awesome_instance) {
-        if (err) return _this.error('添加失败');
-        return _this.success('添加成功');
-      });
+      // 先删除当前角色权限
+      const delResult = await this.ctx.model.RoleAccess.deleteMany({ role_id: _id });
+      // 再添加当前角色权限
+      
+      // 方式一：循环插入数据
+      // for(var i=0;i<data.length;i++){
+      //   let RoleAccessAdd = new this.ctx.model.RoleAccess(data[i])
+      //   RoleAccessAdd.save();
+      // }
 
-      return;
+      // 方式二：create插入
+      const addResult = await this.ctx.model.RoleAccess.create(...data);
+      return this.success('添加成功');
     }
     const _id = this.ctx.request.query.id;
 
@@ -65,6 +68,7 @@ class RoleController extends BaseController {
     roleAccessListObj.forEach(item => {
       roleAccessList.push(item.access_id.toString());
     });
+    
     const accessList = await this.ctx.model.Access.aggregate([
       {
         $lookup: {
