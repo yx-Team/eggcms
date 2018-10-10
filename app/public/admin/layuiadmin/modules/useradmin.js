@@ -232,8 +232,9 @@ layui.define([ 'table', 'form' ], function(exports) {
 
         },
       });
-    } else if(obj.event === 'auth'){
-      window.location.href="/admin/role/auth?id="+data._id
+    } else if (obj.event === 'auth') {
+      console.log(data._id);
+      window.location.href = '/admin/role/auth?id=' + data._id;
     }
   });
 

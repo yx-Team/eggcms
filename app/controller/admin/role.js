@@ -38,6 +38,33 @@ class RoleController extends BaseController {
   }
   // 授权
   async auth() {
+    if (this.ctx.request.method === 'POST') {
+      let { node, _id } = this.ctx.request.body;
+      let data = [];
+      node && node.forEach(item => {
+        data.push({
+          role_id: _id,
+          access_id: item,
+        });
+      });
+      // 先删除
+      await this.ctx.model.RoleAccess.deleteMany({ role_id: _id });
+      // 再添加
+      var _this = this;
+      await this.ctx.model.RoleAccess.create(...data, function(err, awesome_instance) {
+        if (err) return _this.error('添加失败');
+        return _this.success('添加成功');
+      });
+
+      return;
+    }
+    const _id = this.ctx.request.query.id;
+
+    const roleAccessListObj = await this.ctx.model.RoleAccess.find({ role_id: this.app.mongoose.Types.ObjectId(_id) });
+    let roleAccessList = [];
+    roleAccessListObj.forEach(item => {
+      roleAccessList.push(item.access_id.toString());
+    });
     const accessList = await this.ctx.model.Access.aggregate([
       {
         $lookup: {
@@ -52,8 +79,8 @@ class RoleController extends BaseController {
       },
 
     ]);
-    console.log(accessList);
-    await this.ctx.render('/admin/role/auth', { accessList });
+
+    await this.ctx.render('/admin/role/auth', { accessList, _id, roleAccessList });
   }
 
 }
