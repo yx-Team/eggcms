@@ -2,3 +2,4 @@
 {"_id":{"$oid":"5baf288ff772080500697b4f"},"status":1,"add_time":"1538205814446","title":"编辑","description":"编辑文案","__v":0}
 {"_id":{"$oid":"5baf2898f772080500697b50"},"status":1,"add_time":"1538205814446","title":"测试人员","description":"测试","__v":0}
 {"_id":{"$oid":"5baf3f66a53adb4b4cceb5aa"},"status":1,"add_time":"1538211598540","title":"推广人员","description":"推广人员推广人员","__v":0}
+{"_id":{"$oid":"5bbf0758422a993b1c6b2cd6"},"status":1,"add_time":"1539245681433","title":"管理员","description":"管理员具有除权限的所有功能","__v":0}
