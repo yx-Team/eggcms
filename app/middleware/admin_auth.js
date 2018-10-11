@@ -15,7 +15,16 @@ module.exports = (options, app) => {
     ctx.state.csrf = ctx.csrf;
 
     if (ctx.session.userinfo) {
-      await next();
+      // 权限验证
+      const hasAuth = await ctx.service.auth.hasAuth();
+      // const hasAuth = true;
+      if (hasAuth) {
+        await next();
+      } else {
+        // ctx.body = '没有权限';
+        await ctx.render('/admin/template/auth.html');
+      }
+
     } else {
       if (checkUrl(ctx)) {
         await next();
