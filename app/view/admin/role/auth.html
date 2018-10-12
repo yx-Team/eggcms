@@ -45,7 +45,7 @@
 									<td>
 										<div class="layui-form-item" style="padding-left:50px;">
 											<%for(var j=0;j<accessList[i].items.length;j++){%>
-											<input type="checkbox" name="node[]"  value="<%=accessList[i].items[j]._id%>" <%if(roleAccessList.indexOf(accessList[i].items[j]._id.toString())>-1){%>checked=''<%}%> lay-skin="primary" title="【<%-helper.typeFormat(accessList[i].items[j].type)%>】<%=accessList[i].items[j].name%> <%-roleAccessList.indexOf(accessList[i].items[j]._id.toString())%>">
+											<input type="checkbox" name="node[]"  value="<%=accessList[i].items[j]._id%>" <%if(roleAccessList.indexOf(accessList[i].items[j]._id.toString())>-1){%>checked=''<%}%> lay-skin="primary" title="【<%-helper.typeFormat(accessList[i].items[j].type)%>】<%=accessList[i].items[j].name%>">
 											<%}%>
 										</div>
 

@@ -6,7 +6,7 @@
         <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
             <%for(var i = 0;i<menu.length;i++){%>
             <li data-name="<%=menu[i].name%>" class="layui-nav-item <%= i==0?'layui-nav-itemed':''%>">
-              <%if(menu[i].url){%>
+              <%if(menu[i].url && menu[i].url!=='/admin'){%>
                 <a href="javascript:;" lay-href="<%=menu[i].url%>" lay-tips="<%=menu[i].name%>" lay-direction="2">
                   <i class="layui-icon <%=menu[i].icon%>"></i>
                   <cite><%=menu[i].name%></cite>

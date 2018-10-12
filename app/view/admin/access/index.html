@@ -90,8 +90,6 @@
                 , submit = layero.find('iframe').contents().find('#' + submitID);
 
               //监听提交
-              layero.find('iframe').contents().find('.iconBtn').val('123')
-              return;
               iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
 
                 var field = data.field; //获取提交的字段
