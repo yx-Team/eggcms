@@ -50,7 +50,7 @@ class RoleController extends BaseController {
       // 先删除当前角色权限
       const delResult = await this.ctx.model.RoleAccess.deleteMany({ role_id: _id });
       // 再添加当前角色权限
-      
+
       // 方式一：循环插入数据
       // for(var i=0;i<data.length;i++){
       //   let RoleAccessAdd = new this.ctx.model.RoleAccess(data[i])
@@ -68,7 +68,7 @@ class RoleController extends BaseController {
     roleAccessListObj.forEach(item => {
       roleAccessList.push(item.access_id.toString());
     });
-    
+
     const accessList = await this.ctx.model.Access.aggregate([
       {
         $lookup: {
@@ -80,6 +80,9 @@ class RoleController extends BaseController {
       },
       {
         $match: { module_id: '0' },
+      },
+      {
+        $sort: { sort: 1 },
       },
 
     ]);

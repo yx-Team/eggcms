@@ -40,6 +40,22 @@ class AuthService extends Service {
     return false;
 
   }
+  async getAuthMenu() {
+    const { role_id, is_super } = this.ctx.session.userinfo;
+    let accessList = [];
+    if (is_super === 1) {
+      accessList = await this.ctx.model.Access.find({ type: { $in: [ 1, 2 ] } }).sort({ sort: 1 });
+    } else {
+      const access = await this.ctx.model.RoleAccess.find({ role_id });
+      // 权限id数组['asdasd','asdasd','asdsad']
+      const accessIdList = access.reduce((arr, { access_id }) => {
+        arr.push(access_id);
+        return arr;
+      }, []);
+      accessList = await this.ctx.model.Access.find({ _id: { $in: accessIdList }, type: { $in: [ 1, 2 ] } }).sort({ sort: 1 });
+    }
+    return this.ctx.helper.getCate2(accessList);
+  }
 }
 
 module.exports = AuthService;
