@@ -29,6 +29,7 @@ module.exports = app => {
   router.post('/admin/access/add', controller.admin.access.add);
   router.get('/admin/access/edit', controller.admin.access.edit);
   router.post('/admin/access/edit', controller.admin.access.edit);
+  router.get('/admin/access/icon', controller.admin.access.icon);
 
   router.get('/admin/login', controller.admin.user.login);
   router.post('/admin/login', controller.admin.user.login);

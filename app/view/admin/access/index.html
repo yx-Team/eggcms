@@ -76,13 +76,13 @@
         var $ = layui.$
           , form = layui.form
           , table = layui.table;
-
+        
         $('.accessAdd').click(function () {
           layer.open({
             type: 2
             , title: '增加权限'
             , content: '/admin/access/add'
-            , area: ['420px', '570px']
+            , area: ['420px', '650px']
             , btn: ['确定', '取消']
             , yes: function (index, layero) {
               var iframeWindow = window['layui-layer-iframe' + index]
@@ -90,6 +90,8 @@
                 , submit = layero.find('iframe').contents().find('#' + submitID);
 
               //监听提交
+              layero.find('iframe').contents().find('.iconBtn').val('123')
+              return;
               iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
 
                 var field = data.field; //获取提交的字段
@@ -143,7 +145,7 @@
             type: 2
             , title: '增加权限'
             , content: '/admin/access/edit?id='+id
-            , area: ['420px', '570px']
+            , area: ['420px', '650px']
             , btn: ['确定', '取消']
             , yes: function (index, layero) {
               var iframeWindow = window['layui-layer-iframe' + index]

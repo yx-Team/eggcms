@@ -6,12 +6,18 @@
         <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
             <%for(var i = 0;i<menu.length;i++){%>
             <li data-name="<%=menu[i].name%>" class="layui-nav-item <%= i==0?'layui-nav-itemed':''%>">
-                <a href="javascript:;" lay-tips="<%=menu[i].name%>" lay-direction="2">
-                    <i class="layui-icon layui-icon-home"></i>
+              <%if(menu[i].url){%>
+                <a href="javascript:;" lay-href="<%=menu[i].url%>" lay-tips="<%=menu[i].name%>" lay-direction="2">
+                  <i class="layui-icon <%=menu[i].icon%>"></i>
+                  <cite><%=menu[i].name%></cite>
+                </a>
+              <%}else{%>  
+                <a href="javascript:;"  lay-tips="<%=menu[i].name%>" lay-direction="2">
+                    <i class="layui-icon <%=menu[i].icon%>"></i>
                     <cite><%=menu[i].name%></cite>
                 </a>
-                
-                <%if(menu[i].items.length){%>
+              <%}%>
+              <%if(menu[i].items.length){%>
                 <dl class="layui-nav-child">
                     <%for(var j = 0;j<menu[i].items.length;j++){%>
                     <dd data-name="<%=menu[i].items[j].name%>" class="<%= (i==0 && j==0)?'layui-this':''%>">
@@ -19,7 +25,7 @@
                     </dd>
                     <%}%>
                 </dl>
-                <%}%>
+              <%}%>
             </li>
             <%}%>
             <!-- <li data-name="home" class="layui-nav-item layui-nav-itemed">

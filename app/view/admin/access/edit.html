@@ -53,6 +53,13 @@
       </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label">图标</label>
+        <div class="layui-input-inline">
+          <input type="text" name="icon" value="<%=accessInfo.icon%>" placeholder="请选择图标"  class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux iconBtn" style="text-decoration: underline;">查看图标</div>
+      </div>
+    <div class="layui-form-item">
       <label class="layui-form-label">排序</label>
       <div class="layui-input-inline">
         <input type="text" name="sort" value="<%=accessInfo.sort%>" placeholder="请输入排序值" class="layui-input">
@@ -80,7 +87,14 @@
       index: 'lib/index' //主入口模块
     }).use(['index', 'form'], function () {
       var $ = layui.$,form = layui.form;
-
+      $('.iconBtn').click(function(){
+        // window.open("/admin/access/icon");    
+        var iw=$(parent.parent.window).width();
+        var ih=$(parent.parent.window).height();
+        var left =250;
+        var top = (ih-500)/2
+        window.open ("/admin/access/icon", "newwindow", "height=500, width=440, top="+top+", left="+left+", toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no")
+      })
     });
 
   </script>

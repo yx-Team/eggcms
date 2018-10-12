@@ -13,6 +13,9 @@ module.exports = app => {
       type: Number,
       default: 1,
     },
+    icon: {
+      type: String,
+    },
     url: {// 地址
       type: String,
     },

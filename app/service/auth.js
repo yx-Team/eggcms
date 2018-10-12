@@ -44,10 +44,11 @@ class AuthService extends Service {
     const { role_id, is_super } = this.ctx.session.userinfo;
     let accessList = [];
     if (is_super === 1) {
+      // 超级管理员拥有全部菜单
       accessList = await this.ctx.model.Access.find({ type: { $in: [ 1, 2 ] } }).sort({ sort: 1 });
     } else {
+      // 查询权限菜单
       const access = await this.ctx.model.RoleAccess.find({ role_id });
-      // 权限id数组['asdasd','asdasd','asdsad']
       const accessIdList = access.reduce((arr, { access_id }) => {
         arr.push(access_id);
         return arr;

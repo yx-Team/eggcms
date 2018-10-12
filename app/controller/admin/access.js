@@ -58,6 +58,9 @@ class AccessController extends BaseController {
     // const moduleList = this.getCate(moduleData);
     await this.ctx.render('admin/access/edit', { accessInfo: accessInfo[0], moduleList });
   }
+  async icon() {
+    await this.ctx.render('/admin/access/icon');
+  }
 
 }
 
