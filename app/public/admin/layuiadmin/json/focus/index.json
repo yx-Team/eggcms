@@ -1,0 +1,34 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": "100",
+  "data": [{
+    "_id": "1001"
+    ,"title": "首页焦点图1"
+    ,"type": 1
+    ,"focus_img": "https://img.mukewang.com/5bbb31c3000152e809360316.jpg"
+    ,"link": "https://www.imooc.com/"
+    ,"sort": 100
+    ,"status":1
+    ,"add_time": "1539571771604"
+  },
+  {
+    "_id": "1002"
+    ,"title": "首页焦点图2"
+    ,"type": 1
+    ,"focus_img": "https://img.mukewang.com/5bbb31c3000152e809360316.jpg"
+    ,"link": "https://www.imooc.com/"
+    ,"sort": 100
+    ,"status":1
+    ,"add_time": "1539571771604"
+  },{
+    "_id": "1003"
+    ,"title": "首页焦点图3"
+    ,"type": 1
+    ,"focus_img": "https://img.mukewang.com/5bbb31c3000152e809360316.jpg"
+    ,"link": "https://www.imooc.com/"
+    ,"sort": 100
+    ,"status":1
+    ,"add_time": "1539571771604"
+  }]
+}

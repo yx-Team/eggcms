@@ -37,14 +37,18 @@ module.exports = app => {
 
   // 轮播图
   router.get('/admin/focus', controller.admin.focus.index);
+  router.get('/admin/focus/page', controller.admin.focus.page);
+
   router.get('/admin/focus/add', controller.admin.focus.add);
   router.post('/admin/focus/doAdd', controller.admin.focus.doAdd);
   router.get('/admin/focus/edit', controller.admin.focus.edit);
   router.post('/admin/focus/doEdit', controller.admin.focus.doEdit);
   router.get('/admin/focus/delete', controller.admin.focus.delete);
+  router.post('/admin/focus/upload', controller.admin.focus.upload);
   // base
   router.get('/verify', controller.admin.base.verify);// 验证码
   router.get('/admin/base/delete', controller.admin.base.delete);// 删除数据
   router.get('/admin/base/deleteMany', controller.admin.base.deleteMany);// 批量删除
   router.get('/admin/base/page', controller.admin.base.page);// 分页
+
 };

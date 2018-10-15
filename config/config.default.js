@@ -5,6 +5,7 @@ module.exports = appInfo => {
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1538031526805_5014';
+  config.uploadDir = 'app/public/upload/';
   config.session = {
     key: 'EGG_CMS',
     maxAge: 3600 * 1000, // 1 小时
@@ -23,8 +24,8 @@ module.exports = appInfo => {
   // mongoose
   config.mongoose = {
     client: {
-       url: 'mongodb://127.0.0.1:27017/cmsdb',
-      //url: 'mongodb://test:du123456@ds127843.mlab.com:27843/cmsdb',
+      url: 'mongodb://127.0.0.1:27017/cmsdb',
+      // url: 'mongodb://test:du123456@ds127843.mlab.com:27843/cmsdb',
       options: {},
     },
   };

@@ -4,6 +4,9 @@ const Service = require('egg').Service;
 const svgCaptcha = require('svg-captcha');
 const md5 = require('md5');
 
+const mkdirp = require('mz-modules/mkdirp');
+const dayjs = require('dayjs');
+const path = require('path');
 class ToolsService extends Service {
   /**
    * @param {*} [options={}] 自定义参数设置
@@ -35,6 +38,29 @@ class ToolsService extends Service {
    */
   async md5(params) {
     return md5(params);
+  }
+  /**
+   * 获取时间
+   */
+  async getTime() {
+    var time = dayjs(new Date().getTime()).format('YYYYMMDD');
+    return time;
+  }
+  /**
+   * 获取上传后的图片路径
+   * @param {*} filename
+   */
+  async getUploadFile(filename) {
+    // 获取日期
+    const date = await this.getTime();
+    // 根据日期创建目录
+    const dir = path.join(this.config.uploadDir, date);
+    await mkdirp(dir);
+    // 获取时间
+    const time = await new Date().getTime();
+    //   根据时间生成文件
+    const target = path.join(dir, time + path.extname(filename));
+    return target;
   }
 }
 

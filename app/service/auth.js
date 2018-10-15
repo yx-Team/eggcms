@@ -10,7 +10,7 @@ class AuthService extends Service {
     // 5、获取当前访问的url 对应的权限id
     // 6、判断当前访问的url对应的权限id 是否在权限列表中的id中
 
-    const whiteList = [ '/admin/login', '/admin/doLogin', '/admin/logout', '/verify' ];
+    const whiteList = [ '/admin/login', '/admin/doLogin', '/admin/logout', '/verify', '/admin/focus/upload' ];
 
     // 1、获取当前用户的角色
     const userinfo = this.ctx.session.userinfo;

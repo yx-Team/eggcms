@@ -182,7 +182,11 @@ layui.define([ 'table', 'form' ], function(exports) {
   // 监听工具条
   table.on('tool(LAY-user-back-role)', function(obj) {
     const data = obj.data;
+
     if (obj.event === 'del') {
+      if (data.title === '超级管理员') {
+        return layer.msg('超级管理员不能删除');
+      }
       layer.confirm('确定删除此角色？', function(index) {
         $.ajax({
           url: '/admin/base/delete?model=Role&id=' + data._id,
@@ -233,7 +237,9 @@ layui.define([ 'table', 'form' ], function(exports) {
         },
       });
     } else if (obj.event === 'auth') {
-      console.log(data._id);
+      if (data.title === '超级管理员') {
+        return layer.msg('超级管理员不用进行授权');
+      }
       window.location.href = '/admin/role/auth?id=' + data._id;
     }
   });
