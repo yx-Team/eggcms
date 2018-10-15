@@ -32,13 +32,11 @@ class FocusController extends BaseController {
     } else if (body.status === '1') {
       body.status = 1;
     }
-    console.log(body);
     const result = await this.ctx.service.focus.update(body);
     return this.success('编辑成功');
   }
   async delete() {
     const _id = this.ctx.request.query.id;
-    console.log(_id);
     await this.ctx.service.focus.delete(_id);
     this.success('删除成功');
   }
@@ -79,7 +77,6 @@ class FocusController extends BaseController {
         file: target.split('app')[1],
       });
     }
-    console.log(files);
     this.success('上传成功', files);
   }
 }
