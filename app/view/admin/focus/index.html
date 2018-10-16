@@ -55,9 +55,7 @@
         , url: '/admin/focus/page'
         , title: '焦点图管理'
         , cols: [[
-          // { type: 'checkbox', fixed: 'left' }
-           
-           { field: 'sort', title: '排序', width: 80, edit: 'text' }
+          { field: 'sort', title: '排序', width: 80, edit: 'text' }
           , { field: '_id', title: 'ID', width: 220, unresize: true, sort: true }
           , { field: 'title', title: '标题', edit: 'text' }
           , {
@@ -70,9 +68,11 @@
               return '<a href="' + res.link + '" target="_blank"><i class="layui-icon layui-icon-link"><i/></a>'
             }
           }
-          , { field: 'add_time', title: '时间', width: 190,templet:function(res){
-            return res.add_time
-          } }
+          , {
+            field: 'add_time', title: '时间', width: 190, templet: function (res) {
+              return res.add_time
+            }
+          }
           , { field: 'status', title: '状态', width: 120, templet: '#switchTpl' }
           , { fixed: 'right', title: '操作', toolbar: '#operation', width: 120 }
         ]]

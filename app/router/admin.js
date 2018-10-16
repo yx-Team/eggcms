@@ -46,6 +46,11 @@ module.exports = app => {
   router.post('/admin/focus/upload', controller.admin.focus.upload);
   // 文件管理
   router.get('/admin/file', controller.admin.filemanage.index);
+  router.get('/admin/file/list', controller.admin.filemanage.list);
+  router.get('/admin/file/edit', controller.admin.filemanage.edit);
+  router.post('/admin/file/doEdit', controller.admin.filemanage.doEdit);
+  router.post('/admin/file/delete', controller.admin.filemanage.delete);
+  router.post('/admin/file/rename', controller.admin.filemanage.rename);
   // base
   router.get('/verify', controller.admin.base.verify);// 验证码
   router.get('/admin/base/delete', controller.admin.base.delete);// 删除数据

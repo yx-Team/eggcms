@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>编辑</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/public/admin/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/public/admin/layuiadmin/lib/codemirror/codemirror.css">
+</head>
+
+<body>
+  <div class="layui-form" style="" lay-filter="">
+    <textarea class="form-control" id="editCode" name="editCode" style="display:none"><%-editCode%></textarea>
+    <div class="layui-form-item layui-hide">
+      <input type="hidden" name="_csrf" value="<%=csrf%>">
+      <input type="hidden" name="dir" value="<%=dir%>">
+      <input type="button" lay-submit lay-filter="LAY-edit-back-submit" id="LAY-edit-back-submit" value="保存">
+    </div>
+
+  </div>
+  <script src="/public/admin/layuiadmin/lib/codemirror/codemirror.js"></script>
+  <script src="/public/admin/layuiadmin/lib/codemirror/mode/javascript/javascript.js"></script>
+  <script src="/public/admin/layuiadmin/lib/codemirror/mode/markdown/markdown.js"></script>
+  <script src="/public/admin/layuiadmin/lib/codemirror/mode/css/css.js"></script>
+  <script src="/public/admin/layuiadmin/layui/layui.js"></script>
+  <script>
+    layui.config({
+      base: '/public/admin/layuiadmin/' //静态资源所在路径
+    }).extend({
+      index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+      var $ = layui.$,form = layui.form;
+      var iH=$(window).height();
+      var editor = CodeMirror.fromTextArea(document.getElementById('editCode'), {
+        mode:'text/javascript',
+        mode:'text/markdown',
+        mode:'text/css',
+        lineNumbers: true,  // 显示行号
+        lineWrapping: true, //代码折叠
+      });
+      editor.on("change",function(){
+        //事件触发后执行事件
+        $('#editCode').val(editor.getValue())
+      });
+      // 设置尺寸
+      resize()
+
+      $(window).resize(function () {
+        resize()
+      })
+      function resize() {
+        iH = $(window).height()
+        editor.setSize('100%', iH + 'px');
+        // console.log(editor.getValue())
+      }
+      // editor.setValue(``); //给代码框赋值
+      // editor.getValue(); //获取代码框的值
+
+    });
+
+  </script>
+</body>
+
+</html>

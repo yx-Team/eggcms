@@ -1,4 +1,5 @@
 const dayjs = require('dayjs');
+const path = require('path');
 module.exports = {
   timeFormat(params) {
     return dayjs(Number(params)).format('YYYY-MM-DD hh:mm:ss');
@@ -56,5 +57,40 @@ module.exports = {
       }
     });
     return arr;
+  },
+  /**
+   * 获取文件大小
+   * @param {*} size
+   */
+  getFileSize(size) {
+    let unit = [ 'B', 'KB', 'M', 'G' ];
+    let fileSize = size;
+    let num = 0;
+    while (fileSize > 1024) {
+      fileSize /= 1024;
+      num++;
+    }
+    if (num === 0) {
+      return fileSize + unit[num];
+    }
+    return fileSize.toFixed(2) + unit[num];
+  },
+  /**
+   * 根据文件名 获取文件图标
+   * @param {*} filename
+   */
+  getFileIcon(filename) {
+    let ext = path.extname(filename);
+    let icon = '';
+    let fileIcon = [ 'AI', 'BT', 'CODE', 'EXCEL', 'EXE', 'FOLDER', 'FONTS', 'MISC', 'MMAP', 'MUSIC', 'PDF', 'PPT', 'PS', 'TEXT', 'VIDEO', 'HTML', 'WORD', 'XMIND', 'ZIP' ];
+    if (ext) {
+      ext = ext.toLocaleUpperCase().split('.')[1];
+    } else {
+      ext = 'MISC';
+    }
+    if (fileIcon.indexOf(ext) > -1) {
+      return `${ext}.png`;
+    }
+    return 'MISC.png';
   },
 };

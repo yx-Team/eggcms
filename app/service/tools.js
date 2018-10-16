@@ -6,6 +6,7 @@ const md5 = require('md5');
 
 const mkdirp = require('mz-modules/mkdirp');
 const dayjs = require('dayjs');
+const fs = require('fs');
 const path = require('path');
 class ToolsService extends Service {
   /**
@@ -62,6 +63,48 @@ class ToolsService extends Service {
     const target = path.join(dir, time + path.extname(filename));
     return target;
   }
+  /**
+   * 根据路径生成文件列表
+   * @param {*} root
+   */
+  async getFileList(root) {
+    const files = fs.readdirSync(root);
+    let dir = [];
+    let file = [];
+    files.forEach(item => {
+      const stat = fs.statSync(path.join(root, item));
+      const ctime = this.ctx.helper.timeFormat(stat.ctime);
+      const birthtime = this.ctx.helper.timeFormat(stat.birthtime);
+      if (stat.isDirectory()) {
+        dir.push({
+          name: item,
+          size: stat.size,
+          ctime,
+          birthtime,
+          path: path.join(root, item),
+          icon: '/public/admin/layuiadmin/images/file/FOLDER.png',
+          flag: 1, // 1-目录，2-文件
+        });
+      } else {
+        // 根据文件名得到文件图标
+        const icon = this.ctx.helper.getFileIcon(item);
+        // 转换尺寸大小
+        const size = this.ctx.helper.getFileSize(stat.size);
+        file.push({
+          name: item,
+          size,
+          ctime,
+          birthtime,
+          path: path.join(root, item),
+          icon: '/public/admin/layuiadmin/images/file/' + icon,
+          flag: 2,
+        });
+      }
+    });
+
+    return dir.concat(file);
+  }
+
 }
 
 module.exports = ToolsService;

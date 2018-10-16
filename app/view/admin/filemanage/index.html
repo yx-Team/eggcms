@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>文件管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/public/admin/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/public/admin/layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            文件管理 
+          </div>
+          <div class="layui-card-body tableList">
+            <div style="padding:10px 0">
+                <a href="/admin/file?dir=<%=prevDir%>" class="layui-btn layui-btn-primary">上级目录</a>
+                <a href="/admin/file?dir=<%=dir%>" class="layui-btn layui-btn-primary"><i class="layui-icon layui-icon-refresh-3"></i></a>
+                <button class="layui-btn layui-btn-primary">当前路径：<%=dir%></button>
+            </div>
+            <table class="layui-hide" id="file" lay-filter="file"></table>
+            <script type="text/html" id="operation">
+              {{#  if(d.flag == 1){ }}
+              <a class="layui-btn layui-btn-xs"  lay-event="edit">编辑</a>
+              {{#  } else { }}
+              <a class="layui-btn layui-btn-xs fileDialog"  data-url="{{d.path}}" lay-event="edit">编辑</a>
+              {{#  } }}
+              
+              <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-url="{{d.path}}" lay-event="del">删除</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/public/admin/layuiadmin/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '/public/admin/layuiadmin/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index','table'],function(){
+    var $ = layui.$;
+    var table = layui.table;
+    table.render({
+      elem: '#file',
+      url:'/admin/file/list?dir=<%=dir%>',
+      cols: [[
+        {field:'name', title:'文件名', width:220, templet: function(res){
+          if(res.flag===1){
+            return '<a href="/admin/file?dir='+res.path+'"><img src="'+res.icon+'" width="22px" height="22px" style="margin-right:10px;">'+res.name+'</a>'
+          }else if(res.flag===2){
+            return '<a class="fileDialog" data-url="'+res.path+'" href="javascript:;"><img src="'+res.icon+'" width="22px" height="22px" style="margin-right:10px;">'+res.name+'</a>'
+          }
+        }},
+        {field:'size', title:'文件大小', templet: function(res){
+          if(res.flag==1){
+            return '目录'
+          }else if(res.flag==2){
+            return res.size
+          }
+        }},
+        {field:'birthtime', title:'创建时间', width:220},
+        {field:'ctime', title:'修改时间', width:220},
+        {fixed: 'right', title:'操作', toolbar: '#operation', width:150}
+      ]],
+      page: false
+    });
+
+    $('.tableList').on('click','.fileDialog',function(){
+      var fileUrl=$(this).data('url');
+      var fileUrlArr=fileUrl.split('\\');
+      
+      var ext = getExt(fileUrlArr[fileUrlArr.length-1])
+      if(isImg(ext)){
+        alert('图片')
+      }else{
+        var lay = layer.open({
+          type: 2
+          , title: '编辑文件'
+          , content: '/admin/file/edit?dir=' + fileUrl
+          , area: ['80%', '520px']
+          , maxmin: true
+          , btn: ['确定', '取消']
+          , yes: function (index, layero) {
+            var iframeWindow = window['layui-layer-iframe' + index]
+              , submitID = 'LAY-edit-back-submit'
+              , submit = layero.find('iframe').contents().find('#' + submitID);
+
+            //监听提交
+            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+
+              var field = data.field; //获取提交的字段
+              $.ajax({
+                url:'/admin/file/doEdit',
+                method:"POST",
+                data:field,
+                success:function(res){
+                  if(res.success){
+                    layer.msg(res.success_msg)
+                    layer.close(index); //关闭弹层
+                  }
+                }
+
+              })
+            });
+            submit.trigger('click');
+          }
+        });
+        layer.full(lay);
+      }
+      
+      
+    })
+    
+    $('.tableList').on('click','.delBtn',function(){
+      var fileUrl=$(this).data('url');
+      $.ajax({
+        method:"POST",
+        url:'/admin/file/delete',
+        data:{
+          dir:fileUrl,
+          _csrf:'<%=csrf%>'
+        },
+        success:function(res){
+          if(res.success){
+            layer.msg('删除成功')
+            table.reload('file');
+          }
+        }
+      })
+    })
+    function getExt(filename){
+      return filename.split('.')[1].toLocaleLowerCase()
+    }
+    function isImg(ext){
+      var imgList = ['jpg','jpeg','png','gif','bmp','svg','webp'];
+      if(imgList.indexOf(ext)>-1){
+        return true;
+      }
+      return false;
+    }
+
+  });
+  </script>
+</body>
+</html>
