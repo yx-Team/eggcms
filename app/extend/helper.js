@@ -93,4 +93,5 @@ module.exports = {
     }
     return 'MISC.png';
   },
+
 };

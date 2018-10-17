@@ -75,12 +75,17 @@ class ToolsService extends Service {
       const stat = fs.statSync(path.join(root, item));
       const ctime = this.ctx.helper.timeFormat(stat.ctime);
       const birthtime = this.ctx.helper.timeFormat(stat.birthtime);
+
+      const appRoot = path.join(this.app.baseDir, 'app');
+      const publicRoot = path.join(root, item).split(appRoot)[1];
+
       if (stat.isDirectory()) {
         dir.push({
           name: item,
           size: stat.size,
           ctime,
           birthtime,
+          publicRoot,
           path: path.join(root, item),
           icon: '/public/admin/layuiadmin/images/file/FOLDER.png',
           flag: 1, // 1-目录，2-文件
@@ -95,6 +100,7 @@ class ToolsService extends Service {
           size,
           ctime,
           birthtime,
+          publicRoot,
           path: path.join(root, item),
           icon: '/public/admin/layuiadmin/images/file/' + icon,
           flag: 2,

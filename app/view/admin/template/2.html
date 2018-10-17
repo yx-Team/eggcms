@@ -30,13 +30,13 @@
             <table class="layui-hide" id="file" lay-filter="file"></table>
             <script type="text/html" id="operation">
               {{#  if(d.flag == 1){ }}
-              <a class="layui-btn layui-btn-xs renameBtn" data-path="{{ d.path }}" data-name="{{ d.name }}">重命名</a>
+              <a class="layui-btn  layui-btn-xs renameBtn" data-name="{{ d.path }}">重命名</a>
               <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-url="{{d.path}}">删除</a>
               {{#  } else { }}
               <!-- <a class="layui-btn layui-btn-xs fileDialog"  data-url="{{d.path}}" lay-event="edit">编辑</a> -->
-              <a class="layui-btn layui-btn-xs renameBtn" data-path="{{ d.path }}" data-name="{{ d.name }}">重命名</a>
+              <a class="layui-btn layui-btn-xs renameBtn" data-name="{{ d.path }}">重命名</a>
               <a class="layui-btn layui-btn-danger layui-btn-xs delBtn" data-url="{{d.path}}">删除</a>
-              <a class="layui-btn  layui-btn-normal layui-btn-xs " href="/admin/file/download?dir={{d.path}}" >下载</a>
+              <a class="layui-btn  layui-btn-normal layui-btn-xs " href="/admin/file/download?dir={{d.path}}" data-url="{{d.path}}" >下载</a>
               {{#  } }}
               
               
@@ -64,7 +64,7 @@
           if(res.flag===1){
             return '<a href="/admin/file?dir='+res.path+'"><img src="'+res.icon+'" width="22px" height="22px" style="margin-right:10px;">'+res.name+'</a>'
           }else if(res.flag===2){
-            return '<a class="fileDialog" data-url="'+res.path+'" data-href="'+res.publicRoot+'" data-name="'+res.name+'" href="javascript:;"><img src="'+res.icon+'" width="22px" height="22px" style="margin-right:10px;">'+res.name+'</a>'
+            return '<a class="fileDialog" data-url="'+res.path+'" href="javascript:;"><img src="'+res.icon+'" width="22px" height="22px" style="margin-right:10px;">'+res.name+'</a>'
           }
         }},
         {field:'size', title:'文件大小', templet: function(res){
@@ -87,23 +87,8 @@
       
       var ext = getExt(fileUrlArr[fileUrlArr.length-1])
       if(isImg(ext)){
-        var href=$(this).data('href');
-        var img = document.createElement('img');
-        img.src=href;
-        img.onload=function(){
-          layer.open({
-            type: 1,
-            title: false,
-            offset: 'auto',
-            closeBtn: 0,
-            skin: '', //没有背景色
-            shadeClose: true,
-            content:"<img style='display:block;width:100%' src='"+href+"' />"
-          });
-        }
-        
+        alert('图片')
       }else{
-        if(ext==='zip'){return false}
         var lay = layer.open({
           type: 2
           , title: '编辑文件'
@@ -164,11 +149,10 @@
       })
       
     })
-    // 文件重命名
     $('.tableList').on('click','.renameBtn',function(){
-      var oldName=$(this).data('path')
-      var name=$(this).data('name')
-      layer.prompt({title:'重命名',value:name},function(val, index){
+      var oldName=$(this).data('name')
+      layer.prompt(function(val, index){
+        
         $.ajax({
           url:"/admin/file/rename?_csrf=<%=csrf%>",
           method:'POST',
@@ -211,7 +195,15 @@
         })
       });
     })
-    
+    $('.tableList').on('click','.downBtn',function(){
+      var dir = $(this).data('url');
+      $.ajax({
+        url:'/admin/file/download?dir='+dir,
+        success:function(res){
+          
+        }
+      })
+    })
     // 得到文件后缀
     function getExt(filename){
       return filename.split('.')[1].toLocaleLowerCase()
@@ -219,7 +211,6 @@
     // 判断是否为图片
     function isImg(ext){
       var imgList = ['jpg','jpeg','png','gif','bmp','svg','webp'];
-      
       if(imgList.indexOf(ext)>-1){
         return true;
       }
