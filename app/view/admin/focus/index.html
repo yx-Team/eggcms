@@ -60,7 +60,7 @@
           , { field: 'title', title: '标题', edit: 'text' }
           , {
             field: 'focus_img', title: '图片', width: 140, templet: function (res) {
-              return '<img style="width:100px;height:40px;" src="' + res.focus_img + '" />'
+              return '<img class="thumb" style="width:100px;height:40px;" src="' + res.focus_img + '" />'
             }
           }
           , {
@@ -198,7 +198,19 @@
           }
         });
       })
-      // 
+      // 预览图片
+      $('table').on('click','.thumb',function(){
+        var src=$(this).attr('src')
+        layer.open({
+            type: 1,
+            title: false,
+            offset: 'auto',
+            closeBtn: 0,
+            skin: '', //没有背景色
+            shadeClose: true,
+            content:"<img style='display:block;width:100%' src='"+src+"' />"
+          });
+      })
       // 编辑ajax
       function edit(data){
         $.ajax({
