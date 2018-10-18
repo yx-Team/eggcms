@@ -53,6 +53,10 @@ module.exports = app => {
   router.post('/admin/file/rename', controller.admin.filemanage.rename);
   router.post('/admin/file/create', controller.admin.filemanage.create);
   router.get('/admin/file/download', controller.admin.filemanage.download);
+
+  // 爬虫
+  router.get('/admin/crawler', controller.admin.crawler.index);
+  router.get('/admin/crawler/getCate', controller.admin.crawler.getCate);
   // base
   router.get('/verify', controller.admin.base.verify);// 验证码
   router.get('/admin/base/delete', controller.admin.base.delete);// 删除数据
