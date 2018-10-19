@@ -13,6 +13,7 @@ class ZheyeService extends Service {
     }
 
   }
+  // 多表关联查询
   async find(arg) {
     const { page, limit } = arg;
     let skip = Number(limit) * (Number(page) - 1);
@@ -20,26 +21,8 @@ class ZheyeService extends Service {
       .sort({ sort: 1 })
       .populate('cate_id')
       .exec();
-    // const result = await this.ctx.model.Zheye.aggregate([
-    //   {
-    //     $lookup: {
-    //       from: 'zheye_cate',
-    //       localField: 'cate_id',
-    //       foreignField: '_id',
-    //       as: 'cate',
-    //     },
-    //   },
-    //   {
-    //     $limit: Number(limit),
-    //   },
-    //   {
-    //     $skip: skip,
-    //   },
-    // ]);
-
     return result;
   }
-
   async count() {
     const result = await this.ctx.model.Zheye.find({});
     return result.length;
