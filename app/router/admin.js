@@ -53,10 +53,19 @@ module.exports = app => {
   router.post('/admin/file/rename', controller.admin.filemanage.rename);
   router.post('/admin/file/create', controller.admin.filemanage.create);
   router.get('/admin/file/download', controller.admin.filemanage.download);
-
+  // 折页
+  router.get('/admin/zheye', controller.admin.zheye.index);
+  router.get('/admin/zheye/page', controller.admin.zheye.page);
+  router.get('/admin/zheye/add', controller.admin.zheye.add);
+  router.post('/admin/zheye/doAdd', controller.admin.zheye.doAdd);
+  router.get('/admin/zheye/edit', controller.admin.zheye.edit);
+  router.post('/admin/zheye/doEdit', controller.admin.zheye.doEdit);
+  router.get('/admin/zheye/delete', controller.admin.zheye.delete);
+  router.post('/admin/zheye/upload', controller.admin.zheye.upload);
   // 爬虫
   router.get('/admin/crawler', controller.admin.crawler.index);
   router.get('/admin/crawler/getCate', controller.admin.crawler.getCate);
+  router.get('/admin/crawler/getCon', controller.admin.crawler.getCon);
   // base
   router.get('/verify', controller.admin.base.verify);// 验证码
   router.get('/admin/base/delete', controller.admin.base.delete);// 删除数据

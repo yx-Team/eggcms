@@ -28,23 +28,101 @@ class CrawlerController extends Controller {
   async getCate() {
     // 网址;
     let url = 'http://www.niudana.com/';
-    // 爬取内容
+    // 爬取网页内容
     let result = await this.ctx.curl(url);
-
+    // cheerio
     const $ = cheerio.load(result.data.toString());
     // 爬取规则
     let cate = [];
-    $('.ul-tags').find('li').each(function(item) {
+    $('.ul-tags').find('li').each(function(index) {
       cate.push({
         title: $(this).text(),
         url: path.join(url, $(this).find('a').attr('href')),
       });
     });
-    console.log(cate);
     const add = await this.ctx.service.zheyeCate.create(cate);
     if (add) {
       this.ctx.body = 'success';
     }
+  }
+  async getCon() {
+    let that = this;
+    // 网址;
+    let url = 'http://www.niudana.com';
+    // 爬取网页内容
+    let result = await this.ctx.curl(url);
+    // cheerio
+    const $ = cheerio.load(result.data.toString());
+    // 爬取规则
+    let cate = [];
+    let con = [];
+    let titleReg = new RegExp('<b>(.*?)<\/b>');
+    let iconReg = new RegExp("\'(.*?)\'");
+
+    let zheyeCate = await this.ctx.service.zheyeCate.find();
+    // console.log(zheyeCate);
+
+    $('.item-grid').each(function(index) {
+      if (index > 0) {
+        cate.push($(this).find('h3').text());
+        con.push([]);
+        $(this).find('li').each(function() {
+
+          let info = $(this).find('.Link').attr('title');
+          // 标题
+          let title = info.match(titleReg)[1];
+          // 描述
+          let desc = info.split('<br>')[1];
+          // 缩略图
+          let thumb = $(this).find('i').attr('style') || '';
+          if (thumb) {
+            thumb = url + thumb.match(iconReg)[1];
+          } else {
+            thumb = url + '/images/Icon-No-Link.png';
+          }
+          let cate_id = that.app.mongoose.Types.ObjectId(zheyeCate[index - 1]._id);
+          // 链接
+          let link = $(this).find('.goto').attr('href')
+            .split('/goto/?url=')[1];
+          con[index - 1].push({ title, desc, thumb, link, cate_id });
+        });
+
+      }
+    });
+    let thumb = [];
+    let createCon = [];
+    con.forEach((item, index) => {
+      item.forEach(element => {
+        thumb[index] = this.ctx.service.crawler.download(item.thumb);
+      });
+    });
+
+
+    con.forEach((item, index) => {
+      createCon[index] = this.ctx.service.zheye.create(con[index]);
+    });
+    // 执行所有操作
+    Promise.all(createCon).then(() => {
+      this.ctx.body = '爬取成功';
+    });
+    // await this.ctx.service.zheye.create(con[0]);
+    // await this.ctx.service.zheye.create(con[1]);
+    // await this.ctx.service.zheye.create(con[2]);
+    // await this.ctx.service.zheye.create(con[3]);
+    // await this.ctx.service.zheye.create(con[4]);
+    // await this.ctx.service.zheye.create(con[5]);
+    // await this.ctx.service.zheye.create(con[6]);
+    // await this.ctx.service.zheye.create(con[7]);
+    // await this.ctx.service.zheye.create(con[8]);
+    // await this.ctx.service.zheye.create(con[9]);
+    // await this.ctx.service.zheye.create(con[10]);
+    // await this.ctx.service.zheye.create(con[11]);
+    // await this.ctx.service.zheye.create(con[12]);
+    // await this.ctx.service.zheye.create(con[13]);
+    // await this.ctx.service.zheye.create(con[14]);
+    // await this.ctx.service.zheye.create(con[15]);
+    // await this.ctx.service.zheye.create(con[16]);
+
 
   }
 }

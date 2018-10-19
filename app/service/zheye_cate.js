@@ -14,6 +14,15 @@ class Zheye_cateService extends Service {
     }
 
   }
+  async find() {
+    try {
+      const result = await this.ctx.model.ZheyeCate.find({});
+      return result;
+    } catch (error) {
+      return false;
+    }
+
+  }
 }
 
 module.exports = Zheye_cateService;

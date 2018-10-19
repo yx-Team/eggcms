@@ -30,7 +30,6 @@ class CrawlerService extends Service {
       await fse.outputFile(uploadDir, result.data);
       return path.join('/public', date, fileName).replace(/\\/g, '/');
     } catch (error) {
-      this.logger(error);
       return false;
     }
   }

@@ -23,6 +23,11 @@ module.exports = app => {
     cate_id: {
       type: Schema.Types.ObjectId,
       required: true,
+      ref: 'ZheyeCate',
+    },
+    status: {
+      type: Number,
+      default: 1,
     },
     add_time: {
       type: String,
