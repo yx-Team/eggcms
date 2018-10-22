@@ -10,6 +10,13 @@ class ZheyeController extends Controller {
       data,
     };
   }
+  async list() {
+    let data = await this.ctx.model.Zheye.find({});
+    this.ctx.body = {
+      success: true,
+      data,
+    };
+  }
 }
 
 module.exports = ZheyeController;
