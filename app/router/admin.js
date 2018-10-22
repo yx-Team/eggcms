@@ -62,6 +62,9 @@ module.exports = app => {
   router.post('/admin/zheye/doEdit', controller.admin.zheye.doEdit);
   router.get('/admin/zheye/delete', controller.admin.zheye.delete);
   router.post('/admin/zheye/upload', controller.admin.zheye.upload);
+  router.get('/admin/zheyecate/index', controller.admin.zheyecate.index);
+  router.get('/admin/zheyecate/page', controller.admin.zheyecate.page);
+
   // 爬虫
   router.get('/admin/crawler', controller.admin.crawler.index);
   router.get('/admin/crawler/getCate', controller.admin.crawler.getCate);

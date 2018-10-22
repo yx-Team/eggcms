@@ -15,6 +15,10 @@ module.exports = app => {
     desc: {
       type: String,
     },
+    status: {
+      type: Number,
+      default: 1,
+    },
     add_time: {
       type: String,
       default: addTime,

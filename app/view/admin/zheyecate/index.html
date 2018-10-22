@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>XXX</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/public/admin/layuiadmin/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/public/admin/layuiadmin/style/admin.css" media="all">
+</head>
+<body>
+  <div class="layui-fluid">
+    <div class="layui-row">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">
+            折页管理 
+            <button class="layui-btn layui-btn-primary layui-btn-sm addBtn" style="float:right;margin-top: 5px;">添加</button>
+          </div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="zheye" lay-filter="zheye"></table>
+            <script type="text/html" id="operation">
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+           
+            <script type="text/html" id="switchTpl">
+              <!-- 这里的 checked 的状态只是演示 -->
+              <input type="checkbox" name="status" value="{{d._id}}" lay-skin="switch" lay-text="开启|禁用" lay-filter="statusAction" {{ d.status == 1 ? 'checked' : '' }}>
+            </script>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <script src="/public/admin/layuiadmin/layui/layui.js"></script>  
+  <script>
+    layui.config({
+      base: '/public/admin/layuiadmin/' //静态资源所在路径
+    }).extend({
+      index: 'lib/index' //主入口模块
+    }).use(['index', 'table', 'form'], function () {
+      var table = layui.table;
+      var $ = layui.$;
+      var form = layui.form;
+
+      var tableIns = table.render({
+        elem: '#zheye'
+        , url: '/admin/zheyecate/page'
+        , title: '焦点图管理'
+        , cols: [[
+          { field: 'sort', title: '排序', width: 80, edit: 'text' }
+          , { field: '_id', title: 'ID', width: 220, unresize: true, sort: true }
+          , { field: 'title', title: '标题', edit: 'text' }
+          , {
+            field: 'add_time', title: '时间', width: 190, templet: function (res) {
+              return res.add_time
+            }
+          }
+          , { field: 'status', title: '状态', width: 120, templet: '#switchTpl' }
+          , { fixed: 'right', title: '操作', toolbar: '#operation', width: 120 }
+        ]]
+        , page: true
+      });
+      //监听工具条
+      table.on('tool(zheye)', function(obj){
+        var data = obj.data;
+        if(obj.event === 'del'){
+          layer.confirm('真的删除行么', function(index){
+            $.ajax({
+              url:'/admin/zheye/delete',
+              data:{
+                id:data._id
+              },
+              success:function(res){
+                if(res.success){
+                  obj.del();
+                  layer.close(index);
+                }
+              }
+            })
+            
+          });
+        } else if(obj.event === 'edit'){
+          layer.open({
+            type: 2
+            , title: '编辑焦点图'
+            , content: '/admin/zheye/edit?id='+data._id
+            , area: ['420px', '650px']
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+              var iframeWindow = window['layui-layer-iframe' + index]
+                , submitID = 'LAY-zheye-back-submit'
+                , submit = layero.find('iframe').contents().find('#' + submitID);
+
+              //监听提交
+              iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+
+                var field = data.field; //获取提交的字段
+                //提交 Ajax 成功后，静态更新表格中的数据
+                $.ajax({
+                  url: "/admin/zheye/doEdit",
+                  method: "POST",
+                  data: field,
+                  success: function (res) {
+                    if (res.success) {
+                      tableIns.reload(); //数据刷新
+                      layer.close(index); //关闭弹层
+                    } else {
+                      layer.msg('添加失败', {
+                        offset: '15px',
+                        icon: 2,
+                        time: 1000
+                      });
+                    }
+                  }
+                });
+              });
+              submit.trigger('click');
+            }
+          });
+        }
+      });
+      //监听状态操作
+      form.on('switch(statusAction)', function (obj) {
+        console.log(this.value)
+        layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+        var data = {
+          _id: this.value
+        }
+        if (obj.elem.checked) {
+          data.status = 1
+        } else {
+          data.status = 0
+        }
+        edit(data)
+      });
+      // 单元格编辑
+      table.on('edit(zheye)', function (obj) {
+        console.log(obj.value); //得到修改后的值
+        console.log(obj.field); //当前编辑的字段名
+        console.log(obj.data); //所在行的所有相关数据  
+        edit(obj.data)
+      });
+      // 添加
+      $('.addBtn').click(function () {
+        layer.open({
+          type: 2
+          , title: '增加焦点图'
+          , content: '/admin/zheye/add'
+          , area: ['420px', '650px']
+          , btn: ['确定', '取消']
+          , yes: function (index, layero) {
+            var iframeWindow = window['layui-layer-iframe' + index]
+              , submitID = 'LAY-zheye-back-submit'
+              , submit = layero.find('iframe').contents().find('#' + submitID);
+
+            //监听提交
+            iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+
+              var field = data.field; //获取提交的字段
+              //提交 Ajax 成功后，静态更新表格中的数据
+              $.ajax({
+                url: "/admin/zheye/doAdd",
+                method: "POST",
+                data: field,
+                success: function (res) {
+                  if (res.success) {
+                    tableIns.reload(); //数据刷新
+                    layer.close(index); //关闭弹层
+                  } else {
+                    layer.msg('添加失败', {
+                      offset: '15px',
+                      icon: 2,
+                      time: 1000
+                    });
+                  }
+                }
+              });
+            });
+            submit.trigger('click');
+          }
+        });
+      })
+      // 预览图片
+      $('table').on('click','.thumb',function(){
+        var src=$(this).attr('src')
+        layer.open({
+            type: 1,
+            title: false,
+            offset: 'auto',
+            closeBtn: 0,
+            skin: '', //没有背景色
+            shadeClose: true,
+            content:"<img style='display:block;width:100%' src='"+src+"' />"
+          });
+      })
+      // 编辑ajax
+      function edit(data){
+        $.ajax({
+          url: "/admin/zheye/doEdit?_csrf=<%=csrf%>",
+          method: "POST",
+          data: data,
+          success: function (res) {
+            if (res.success) {
+              tableIns.reload(); //数据刷新
+            } else {
+              layer.msg('修改失败', {
+                offset: '15px',
+                icon: 2,
+                time: 1000
+              });
+            }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
