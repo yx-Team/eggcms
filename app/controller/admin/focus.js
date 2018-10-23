@@ -1,8 +1,7 @@
 'use strict';
 
 const BaseController = require('./base');
-const pump = require('mz-modules/pump');
-const fs = require('fs');
+
 class FocusController extends BaseController {
   async index() {
     await this.ctx.render('/admin/focus/index');
@@ -56,29 +55,7 @@ class FocusController extends BaseController {
       data,
     };
   }
-  // 上传
-  async upload() {
-    const parts = this.ctx.multipart({ autoFields: true });
-    const files = [];
-    let stream;
-    while ((stream = await parts()) != null) {
-      if (!stream.filename) {
-        return;
-      }
-      const filename = stream.filename.toLowerCase();
-      // 根据文件名得到上传路径
-      let target = await this.ctx.service.tools.getUploadFile(filename);
-      const fileSql = target.replace(/\\/g, '/');
-      // 创建写入流
-      const writeStream = fs.createWriteStream(target);
-      // 写入成功，销毁流
-      await pump(stream, writeStream);
-      files.push({
-        file: target.split('app')[1],
-      });
-    }
-    this.success('上传成功', files);
-  }
+
 }
 
 module.exports = FocusController;

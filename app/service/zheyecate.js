@@ -35,6 +35,12 @@ class ZheyecateService extends Service {
     const result = await this.ctx.model.ZheyeCate.find({});
     return result.length;
   }
+  async update(body) {
+    return await this.ctx.model.ZheyeCate.findOneAndUpdate({ _id: body._id }, body);
+  }
+  async delete(_id) {
+    return await this.ctx.model.ZheyeCate.findOneAndDelete({ _id });
+  }
 }
 
 module.exports = ZheyecateService;

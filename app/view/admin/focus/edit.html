@@ -78,7 +78,7 @@
       //普通图片上传
       var uploadInst = upload.render({
         elem: '#upload'
-        ,url: '/admin/focus/upload?_csrf=<%=csrf%>'
+        ,url: '/admin/upload/upload?_csrf=<%=csrf%>'
         ,before: function(obj){
           //预读本地文件示例，不支持ie8
           obj.preview(function(index, file, result){

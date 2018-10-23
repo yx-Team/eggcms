@@ -15,15 +15,16 @@
     <div class="layui-form-item">
       <label class="layui-form-label">标题</label>
       <div class="layui-input-inline">
-        <input type="text" name="title" lay-verify="required" value="<%=focus.title%>" placeholder="请输入焦点图名称" class="layui-input">
+        <input type="text" name="title" lay-verify="required" value="<%=zheye.title%>" placeholder="请输入焦点图名称" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item">
       <label class="layui-form-label">类型</label>
       <div class="layui-input-inline">
-        <select name="type" lay-verify="required">
-          <option value="1" selected>网站</option>
-          <option value="2">移动端</option>
+        <select name="cate_id" lay-verify="required">
+          <%for(var i=0;i<cate.length; i++){%>
+          <option value="<%=cate[i]._id%>" <%- cate[i]._id.toString()===zheye.cate_id.toString()?'selected':'' %> ><%=cate[i].title%></option>
+          <%}%>
         </select>
       </div>
     </div>
@@ -32,37 +33,43 @@
         <div class="layui-input-inline">
             <div class="layui-upload">
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" width="92px" height="92px" src="<%=focus.focus_img%>" id="thumb">
+                    <img class="layui-upload-img" width="92px" height="92px" src="<%=zheye.thumb%>" id="thumb">
                     <p id="demoText"></p>
                   </div>
                 <button type="button" class="layui-btn" id="upload">上传图片</button>
-                <input type="hidden" name="focus_img" lay-verify="image" value="<%=focus.focus_img%>">
+                <input type="hidden" name="thumb" lay-verify="image" value="<%=zheye.thumb%>">
               </div>   
         </div>
       </div>
     <div class="layui-form-item">
       <label class="layui-form-label">链接</label>
       <div class="layui-input-inline">
-        <input type="text" name="link"  value="<%=focus.link%>" placeholder="请输入跳转链接" class="layui-input">
+        <input type="text" name="link"  value="<%=zheye.link%>" placeholder="请输入跳转链接" class="layui-input">
       </div>
     </div>
    
     <div class="layui-form-item">
       <label class="layui-form-label">排序</label>
       <div class="layui-input-inline">
-        <input type="text" name="sort" value="<%=focus.sort%>" lay-verify="required"  placeholder="请输入排序值" class="layui-input">
+        <input type="text" name="sort" value="<%=zheye.sort%>" lay-verify="required"  placeholder="请输入排序值" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item layui-form-text">
       <label class="layui-form-label">状态</label>
       <div class="layui-input-block">
-          <input type="checkbox" name="status" lay-verify="required" value="<%=focus.status%>" lay-skin="switch" <%=focus.status==1?'checked':''%>   lay-text="开启|禁用" lay-filter="statusAction">
+          <input type="checkbox" name="status" lay-verify="required" value="<%=zheye.status%>" lay-skin="switch" <%=zheye.status==1?'checked':''%>   lay-text="开启|禁用" lay-filter="statusAction">
+      </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+      <label class="layui-form-label">描述</label>
+      <div class="layui-input-block">
+        <textarea name="desc" placeholder="请输入描述内容" class="layui-textarea"><%=zheye.desc%></textarea>
       </div>
     </div>
     <div class="layui-form-item layui-hide">
       <input type="hidden" name="_csrf" value="<%=csrf%>">
-      <input type="hidden" name="_id" value="<%=focus._id%>">
-      <input type="button" lay-submit lay-filter="LAY-focus-back-submit" id="LAY-focus-back-submit" value="添加">
+      <input type="hidden" name="_id" value="<%=zheye._id%>">
+      <input type="button" lay-submit lay-filter="LAY-zheye-back-submit" id="LAY-zheye-back-submit" value="添加">
     </div>
 
   </div>
@@ -78,7 +85,7 @@
       //普通图片上传
       var uploadInst = upload.render({
         elem: '#upload'
-        ,url: '/admin/focus/upload?_csrf=<%=csrf%>'
+        ,url: '/admin/upload/upload?_csrf=<%=csrf%>'
         ,before: function(obj){
           //预读本地文件示例，不支持ie8
           obj.preview(function(index, file, result){
@@ -88,7 +95,7 @@
         ,done: function(res){
           //如果上传失败
           if(res.success){
-            $('input[name="focus_img"]').val(res.data[0].file)
+            $('input[name="thumb"]').val(res.data[0].file)
             return layer.msg('上传成功');
           }else{
             return layer.msg('上传失败');

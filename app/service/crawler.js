@@ -10,6 +10,7 @@ class CrawlerService extends Service {
    * @param {*} imgURL
    */
   async download(imgURL) {
+
     // 文件后缀
     const ext = path.extname(imgURL);
     // 爬取图片
@@ -33,6 +34,7 @@ class CrawlerService extends Service {
       return false;
     }
   }
+
 }
 
 module.exports = CrawlerService;

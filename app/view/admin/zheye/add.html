@@ -19,20 +19,21 @@
       </div>
     </div>
     <div class="layui-form-item">
-      <label class="layui-form-label">分类</label>
+      <label class="layui-form-label">类型</label>
       <div class="layui-input-inline">
-        <select name="type" lay-verify="required">
-          <option value="1" selected>网站</option>
-          <option value="2">移动端</option>
+        <select name="cate_id" lay-verify="required">
+          <%for(var i=0;i<cate.length; i++){%>
+          <option value="<%=cate[i]._id%>" ><%=cate[i].title%></option>
+          <%}%>
         </select>
       </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">缩略图</label>
+        <label class="layui-form-label">图片</label>
         <div class="layui-input-inline">
             <div class="layui-upload">
                 <div class="layui-upload-list">
-                    <img class="layui-upload-img" width="92px" height="92px" id="thumb">
+                    <img class="layui-upload-img" width="92px" height="92px" src="/public/admin/layuiadmin/images/icon-no-link.png" id="thumb">
                     <p id="demoText"></p>
                   </div>
                 <button type="button" class="layui-btn" id="upload">上传图片</button>
@@ -50,18 +51,24 @@
     <div class="layui-form-item">
       <label class="layui-form-label">排序</label>
       <div class="layui-input-inline">
-        <input type="text" name="sort" lay-verify="required" value="100" placeholder="请输入排序值" class="layui-input">
+        <input type="text" name="sort" value="100" lay-verify="required"  placeholder="请输入排序值" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item layui-form-text">
       <label class="layui-form-label">状态</label>
       <div class="layui-input-block">
-          <input type="checkbox" name="status" lay-verify="required" value="1" lay-skin="switch" checked lay-text="开启|禁用" lay-filter="statusAction">
+          <input type="checkbox" name="status" lay-verify="required" value="1" lay-skin="switch" checked   lay-text="开启|禁用" lay-filter="statusAction">
+      </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+      <label class="layui-form-label">描述</label>
+      <div class="layui-input-block">
+        <textarea name="desc" placeholder="请输入描述内容" class="layui-textarea"></textarea>
       </div>
     </div>
     <div class="layui-form-item layui-hide">
       <input type="hidden" name="_csrf" value="<%=csrf%>">
-      <input type="button" lay-submit lay-filter="LAY-focus-back-submit" id="LAY-focus-back-submit" value="添加">
+      <input type="button" lay-submit lay-filter="LAY-zheye-back-submit" id="LAY-zheye-back-submit" value="添加">
     </div>
 
   </div>
@@ -77,7 +84,7 @@
       //普通图片上传
       var uploadInst = upload.render({
         elem: '#upload'
-        ,url: '/admin/focus/upload?_csrf=<%=csrf%>'
+        ,url: '/admin/upload/upload?_csrf=<%=csrf%>'
         ,before: function(obj){
           //预读本地文件示例，不支持ie8
           obj.preview(function(index, file, result){
@@ -87,7 +94,7 @@
         ,done: function(res){
           //如果上传失败
           if(res.success){
-            $('input[name="focus_img"]').val(res.data[0].file)
+            $('input[name="thumb"]').val(res.data[0].file)
             return layer.msg('上传成功');
           }else{
             return layer.msg('上传失败');

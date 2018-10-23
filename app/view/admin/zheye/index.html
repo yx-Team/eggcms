@@ -141,8 +141,7 @@
       });
       //监听状态操作
       form.on('switch(statusAction)', function (obj) {
-        console.log(this.value)
-        layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
+       
         var data = {
           _id: this.value
         }

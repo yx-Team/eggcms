@@ -59,13 +59,14 @@ class CrawlerController extends Controller {
     let titleReg = new RegExp('<b>(.*?)<\/b>');
     let iconReg = new RegExp("\'(.*?)\'");
 
-    let zheyeCate = await this.ctx.service.zheyeCate.find();
+    let zheyeCate = await this.ctx.service.zheyecate.find({});
     // console.log(zheyeCate);
 
     $('.item-grid').each(function(index) {
       if (index > 0) {
         cate.push($(this).find('h3').text());
         con.push([]);
+
         $(this).find('li').each(function() {
 
           let info = $(this).find('.Link').attr('title');
@@ -80,31 +81,37 @@ class CrawlerController extends Controller {
           } else {
             thumb = url + '/images/Icon-No-Link.png';
           }
+
           let cate_id = that.app.mongoose.Types.ObjectId(zheyeCate[index - 1]._id);
           // 链接
           let link = $(this).find('.goto').attr('href')
             .split('/goto/?url=')[1];
+
           con[index - 1].push({ title, desc, thumb, link, cate_id });
+
         });
 
       }
     });
     let thumb = [];
     let createCon = [];
-    con.forEach((item, index) => {
-      item.forEach(element => {
-        thumb[index] = this.ctx.service.crawler.download(item.thumb);
-      });
-    });
+    // con.forEach((item, index) => {
+    //   item.forEach(async element => {
+    //     await that.sleep(3);
+    //     thumb[index] = await this.ctx.service.crawler.download(element.thumb);
+    //     console.log(thumb[index]);
+    //   });
+    // });
+    let resultCon = await this.webcon(con);
 
-
-    con.forEach((item, index) => {
-      createCon[index] = this.ctx.service.zheye.create(con[index]);
-    });
+    this.ctx.body = '爬取成功';
+    // con.forEach((item, index) => {
+    //   createCon[index] = this.ctx.service.zheye.create(con[index]);
+    // });
     // 执行所有操作
-    Promise.all(createCon).then(() => {
-      this.ctx.body = '爬取成功';
-    });
+    // Promise.all(createCon).then(() => {
+    //   this.ctx.body = '爬取成功';
+    // });
     // await this.ctx.service.zheye.create(con[0]);
     // await this.ctx.service.zheye.create(con[1]);
     // await this.ctx.service.zheye.create(con[2]);
@@ -123,6 +130,31 @@ class CrawlerController extends Controller {
     // await this.ctx.service.zheye.create(con[15]);
     // await this.ctx.service.zheye.create(con[16]);
 
+
+  }
+  async webcon(con) {
+    let that = this;
+    let conx = con;
+    await conx.forEach(async function(item, index) {
+      await that.sleep(index);
+      item.forEach(async function(element, eindex) {
+        await that.sleep(eindex);
+        let img = await that.ctx.service.crawler.download(element.thumb);
+        element.thumb = img;
+      });
+      console.log(item);
+      // await this.ctx.service.zheye.create(con[index]);
+
+    });
+    return '成功';
+  }
+  async sleep(time) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, time * 1000);
+
+    });
 
   }
 }

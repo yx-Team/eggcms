@@ -1,13 +1,14 @@
 'use strict';
 
-const Controller = require('egg').Controller;
+const BaseController = require('./base');
 
-class ZheyeController extends Controller {
+class ZheyeController extends BaseController {
   async index() {
     await this.ctx.render('/admin/zheye/index');
   }
   async add() {
-    await this.ctx.render('/admin/zheye/add');
+    const cate = await this.ctx.model.ZheyeCate.find({});
+    await this.ctx.render('/admin/zheye/add', { cate });
   }
   async doAdd() {
     let body = this.ctx.request.body;
@@ -21,7 +22,8 @@ class ZheyeController extends Controller {
   async edit() {
     const _id = this.ctx.request.query.id;
     const zheye = await this.ctx.model.Zheye.findOne({ _id });
-    await this.ctx.render('/admin/zheye/edit', { zheye });
+    const cate = await this.ctx.model.ZheyeCate.find({});
+    await this.ctx.render('/admin/zheye/edit', { zheye, cate });
   }
   async doEdit() {
     let body = this.ctx.request.body;
@@ -31,6 +33,10 @@ class ZheyeController extends Controller {
     } else if (body.status === '1') {
       body.status = 1;
     }
+    if (body.add_time) {
+      delete body.add_time;
+    }
+
     const result = await this.ctx.service.zheye.update(body);
     return this.success('编辑成功');
   }
@@ -56,29 +62,7 @@ class ZheyeController extends Controller {
       data,
     };
   }
-  // 上传
-  async upload() {
-    const parts = this.ctx.multipart({ autoFields: true });
-    const files = [];
-    let stream;
-    while ((stream = await parts()) != null) {
-      if (!stream.filename) {
-        return;
-      }
-      const filename = stream.filename.toLowerCase();
-      // 根据文件名得到上传路径
-      let target = await this.ctx.service.tools.getUploadFile(filename);
-      const fileSql = target.replace(/\\/g, '/');
-      // 创建写入流
-      const writeStream = fs.createWriteStream(target);
-      // 写入成功，销毁流
-      await pump(stream, writeStream);
-      files.push({
-        file: target.split('app')[1],
-      });
-    }
-    this.success('上传成功', files);
-  }
+
 }
 
 module.exports = ZheyeController;

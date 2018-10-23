@@ -43,7 +43,7 @@ module.exports = app => {
   router.get('/admin/focus/edit', controller.admin.focus.edit);
   router.post('/admin/focus/doEdit', controller.admin.focus.doEdit);
   router.get('/admin/focus/delete', controller.admin.focus.delete);
-  router.post('/admin/focus/upload', controller.admin.focus.upload);
+
   // 文件管理
   router.get('/admin/file', controller.admin.filemanage.index);
   router.get('/admin/file/list', controller.admin.filemanage.list);
@@ -61,9 +61,13 @@ module.exports = app => {
   router.get('/admin/zheye/edit', controller.admin.zheye.edit);
   router.post('/admin/zheye/doEdit', controller.admin.zheye.doEdit);
   router.get('/admin/zheye/delete', controller.admin.zheye.delete);
-  router.post('/admin/zheye/upload', controller.admin.zheye.upload);
   router.get('/admin/zheyecate/index', controller.admin.zheyecate.index);
   router.get('/admin/zheyecate/page', controller.admin.zheyecate.page);
+  router.get('/admin/zheyecate/add', controller.admin.zheyecate.add);
+  router.post('/admin/zheyecate/doAdd', controller.admin.zheyecate.doAdd);
+  router.get('/admin/zheyecate/edit', controller.admin.zheyecate.edit);
+  router.post('/admin/zheyecate/doEdit', controller.admin.zheyecate.doEdit);
+  router.get('/admin/zheyecate/delete', controller.admin.zheyecate.delete);
 
   // 爬虫
   router.get('/admin/crawler', controller.admin.crawler.index);
@@ -74,5 +78,6 @@ module.exports = app => {
   router.get('/admin/base/delete', controller.admin.base.delete);// 删除数据
   router.get('/admin/base/deleteMany', controller.admin.base.deleteMany);// 批量删除
   router.get('/admin/base/page', controller.admin.base.page);// 分页
+  router.post('/admin/upload/upload', controller.admin.upload.upload);
 
 };

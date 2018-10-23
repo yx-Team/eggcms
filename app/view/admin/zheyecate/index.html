@@ -73,7 +73,7 @@
         if(obj.event === 'del'){
           layer.confirm('真的删除行么', function(index){
             $.ajax({
-              url:'/admin/zheye/delete',
+              url:'/admin/zheyecate/delete',
               data:{
                 id:data._id
               },
@@ -89,9 +89,9 @@
         } else if(obj.event === 'edit'){
           layer.open({
             type: 2
-            , title: '编辑焦点图'
-            , content: '/admin/zheye/edit?id='+data._id
-            , area: ['420px', '650px']
+            , title: '编辑分类'
+            , content: '/admin/zheyecate/edit?id='+data._id
+            , area: ['420px', '400px']
             , btn: ['确定', '取消']
             , yes: function (index, layero) {
               var iframeWindow = window['layui-layer-iframe' + index]
@@ -104,7 +104,7 @@
                 var field = data.field; //获取提交的字段
                 //提交 Ajax 成功后，静态更新表格中的数据
                 $.ajax({
-                  url: "/admin/zheye/doEdit",
+                  url: "/admin/zheyecate/doEdit",
                   method: "POST",
                   data: field,
                   success: function (res) {
@@ -151,9 +151,9 @@
       $('.addBtn').click(function () {
         layer.open({
           type: 2
-          , title: '增加焦点图'
-          , content: '/admin/zheye/add'
-          , area: ['420px', '650px']
+          , title: '添加分类'
+          , content: '/admin/zheyecate/add'
+          , area: ['420px', '400px']
           , btn: ['确定', '取消']
           , yes: function (index, layero) {
             var iframeWindow = window['layui-layer-iframe' + index]
@@ -166,7 +166,7 @@
               var field = data.field; //获取提交的字段
               //提交 Ajax 成功后，静态更新表格中的数据
               $.ajax({
-                url: "/admin/zheye/doAdd",
+                url: "/admin/zheyecate/doAdd",
                 method: "POST",
                 data: field,
                 success: function (res) {
@@ -202,8 +202,9 @@
       })
       // 编辑ajax
       function edit(data){
+        
         $.ajax({
-          url: "/admin/zheye/doEdit?_csrf=<%=csrf%>",
+          url: "/admin/zheyecate/doEdit?_csrf=<%=csrf%>",
           method: "POST",
           data: data,
           success: function (res) {
