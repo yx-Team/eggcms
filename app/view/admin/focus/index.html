@@ -123,7 +123,7 @@
                       tableIns.reload(); //数据刷新
                       layer.close(index); //关闭弹层
                     } else {
-                      layer.msg('添加失败', {
+                      layer.msg('编辑失败', {
                         offset: '15px',
                         icon: 2,
                         time: 1000
@@ -153,9 +153,7 @@
       });
       // 单元格编辑
       table.on('edit(focus)', function (obj) {
-        console.log(obj.value); //得到修改后的值
-        console.log(obj.field); //当前编辑的字段名
-        console.log(obj.data); //所在行的所有相关数据  
+        
         edit(obj.data)
       });
       // 添加

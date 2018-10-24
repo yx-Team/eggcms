@@ -1,8 +1,10 @@
 'use strict';
 
 const BaseController = require('./base');
-
+const qiniu = require('qiniu');
+const nanoid = require('nanoid');
 class ZheyeController extends BaseController {
+
   async index() {
     await this.ctx.render('/admin/zheye/index');
   }
@@ -54,13 +56,56 @@ class ZheyeController extends BaseController {
       return item;
     });
     const count = await this.ctx.service.zheye.count();
-    console.log(data);
+
     this.ctx.body = {
       code: 0,
       msg: '获取成功',
       count,
       data,
     };
+  }
+
+  async uploadQiniu() {
+    let url = 'http://dlweb.sogoucdn.com/translate/pc/static/img/logo@1x.dd6a432c.png';
+    // 第一步：获取配置
+    const qiniuOptions = this.config.qiniu;
+    const bucket = qiniuOptions.bucket;
+    const accessKey = qiniuOptions.accessKey;
+    const secretKey = qiniuOptions.secretKey;
+    const zone = qiniuOptions.zone;
+    const key = nanoid() + '.png';
+    // 第二步：定义好鉴权对象mac
+    const mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+    // 第三步：设置服务空间
+    const cfg = new qiniu.conf.Config();
+    cfg.zone = qiniu.zone[zone];
+    // 第四步
+    const client = new qiniu.rs.BucketManager(mac, cfg);
+    let result;
+    try {
+      result = await this.fetch(client, url, bucket, key);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+    this.ctx.body = this.config.qiniu.Domain + result.key;
+
+  }
+  async fetch(client, url, bucket, key) {
+    return new Promise((resolve, reject) => {
+      client.fetch(url, bucket, nanoid(), (err, ret, info) => {
+        if (err) {
+          reject(error);
+        } else {
+          if (info.status !== 200) {
+            reject(info.data.error);
+          } else {
+            resolve(info.data);
+          }
+        }
+
+      });
+    });
   }
 
 }

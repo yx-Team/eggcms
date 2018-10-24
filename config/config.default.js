@@ -66,5 +66,15 @@ module.exports = appInfo => {
       // 一般来说，不需要特殊针对 jsonp 进行错误定义，jsonp 的错误处理会自动调用 json 错误处理，并包装成 jsonp 的响应格式
     },
   };
+
+  // 七牛云配置
+  config.qiniu = {
+    accessKey: 'vbfz0guEuh87tn1eKrg17UCqny00YHb6425t0Ehw',
+    secretKey: 'cXI-HwRILF28uopvPQdtTXo9STSMHk96JDB5UcNN',
+    bucket: 'iuehtml',
+    zone: 'Zone_z2',
+    prefix: '',
+    Domain: 'http://static.iuehtml.cn/',
+  };
   return config;
 };

@@ -42,10 +42,10 @@
                   <th>操作</th>
                 </tr> 
               </thead>
-              <tbody>
+              <tbody class="accesslist">
                 <%for(var i=0;i<accessList.length;i++){%>
-                    <tr>
-                      <td><%=i+1%></td>
+                    <tr style="<%if(accessList[i].level!==0){%>display:none<%}%>" moduleid="<%- accessList[i].level!==0?accessList[i].module_id:'0'%>">
+                      <td><%if(accessList[i].level==0){%> <button class="layui-btn layui-btn-primary layui-btn-xs toggleBtn" data-id="<%=accessList[i]._id%>" style="width: 29px;"><i class="layui-icon">&#xe654;</i></button> <%}%></td>
                       <td><%if(accessList[i].prefix){%>├<%}%><%=accessList[i].prefix%><%=accessList[i].action_name%></td>
                       <td><%=accessList[i].url%></td>
                       <td><%-helper.typeFormat(accessList[i].type)%></td>
@@ -177,6 +177,19 @@
               submit.trigger('click');
             }
           });
+        })
+        $('.accesslist').on('click','.toggleBtn',function(){
+          var moduleId=$(this).data('id')
+          var first = $(this).parents('tr').next('tr[moduleid="'+moduleId+'"]')
+          if(first.css('display')==='none'){
+            $(this).find('.layui-icon').html('-')
+            $(this).parents('tr').siblings('tr[moduleid="'+moduleId+'"]').show();
+          }else{
+            $(this).find('.layui-icon').html('&#xe654;')
+            $(this).parents('tr').siblings('tr[moduleid="'+moduleId+'"]').hide();
+          }
+          // if()
+         
         })
       });
   </script>

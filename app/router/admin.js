@@ -69,6 +69,10 @@ module.exports = app => {
   router.post('/admin/zheyecate/doEdit', controller.admin.zheyecate.doEdit);
   router.get('/admin/zheyecate/delete', controller.admin.zheyecate.delete);
 
+  // 七牛接口
+  router.get('/admin/qiniu/fetchToQiniu', controller.admin.qiniu.fetchToQiniu);
+  router.post('/admin/qiniu/uploadToQiniu', controller.admin.qiniu.uploadToQiniu);
+
   // 爬虫
   router.get('/admin/crawler', controller.admin.crawler.index);
   router.get('/admin/crawler/getCate', controller.admin.crawler.getCate);
