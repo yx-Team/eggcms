@@ -40,7 +40,7 @@ module.exports = appInfo => {
     match: '/admin',
   };
   config.local = {
-    enable: true,
+    enable: false,
     // match: '/api/user',
   };
   // 模版

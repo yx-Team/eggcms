@@ -20,12 +20,35 @@ class UserController extends BaseController {
     console.log(decoded);
   }
   async reg() {
+
     let { username, password, repassword, email } = this.ctx.request.body;
     if (!username || !password || !repassword || !email) {
-      return this.error('请填写全部信息');
+      return this.error('注册信息不能为空');
     }
     if (password !== repassword) {
-      return this.error('两次密码不一致');
+      return this.error('请输入相同的密码');
+    }
+    try {
+      password = await this.ctx.service.tools.md5(password);
+      let username = await this.ctx.model.User.findOne({ username });
+      console.log(user);
+      if (!user) {
+
+        const user = new this.ctx.model.User({
+          username,
+          password,
+          email,
+        });
+        const result = await user.save();
+        return this.success('注册成功');
+
+      }
+      return this.error('用户已注册');
+
+
+    } catch (error) {
+      console.log(error);
+      this.ctx.throw(500);
     }
   }
   async authCallback() {
