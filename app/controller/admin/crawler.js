@@ -5,6 +5,7 @@ const cheerio = require('cheerio');
 const path = require('path');
 const fse = require('fs-extra');
 class CrawlerController extends Controller {
+
   async index() {
     //   网址
     // let url = 'http://www.niudana.com/';
@@ -40,7 +41,8 @@ class CrawlerController extends Controller {
         url: path.join(url, $(this).find('a').attr('href')),
       });
     });
-    const add = await this.ctx.service.zheyeCate.create(cate);
+
+    const add = await this.ctx.service.zheyecate.create(cate);
     if (add) {
       this.ctx.body = 'success';
     }
@@ -66,7 +68,7 @@ class CrawlerController extends Controller {
       if (index > 0) {
         cate.push($(this).find('h3').text());
         con.push([]);
-
+        var iicate = $(this).find('h3').text();
         $(this).find('li').each(function() {
 
           let info = $(this).find('.Link').attr('title');
@@ -81,8 +83,13 @@ class CrawlerController extends Controller {
           } else {
             thumb = url + '/images/Icon-No-Link.png';
           }
-
-          let cate_id = that.app.mongoose.Types.ObjectId(zheyeCate[index - 1]._id);
+          let cate_id = 0;
+          zheyeCate.forEach((icate, ii) => {
+            if (iicate === zheyeCate[ii].title) {
+              cate_id = that.app.mongoose.Types.ObjectId(zheyeCate[ii]._id);
+            }
+          });
+          // cate_id = that.app.mongoose.Types.ObjectId(zheyeCate[index - 1]._id);
           // 链接
           let link = $(this).find('.goto').attr('href')
             .split('/goto/?url=')[1];
@@ -93,7 +100,7 @@ class CrawlerController extends Controller {
 
       }
     });
-    let thumb = [];
+    // let thumb = [];
     let createCon = [];
     // con.forEach((item, index) => {
     //   item.forEach(async element => {
@@ -102,16 +109,16 @@ class CrawlerController extends Controller {
     //     console.log(thumb[index]);
     //   });
     // });
-    let resultCon = await this.webcon(con);
+    // let resultCon = await this.webcon(con);
 
-    this.ctx.body = '爬取成功';
-    // con.forEach((item, index) => {
-    //   createCon[index] = this.ctx.service.zheye.create(con[index]);
-    // });
-    // 执行所有操作
-    // Promise.all(createCon).then(() => {
-    //   this.ctx.body = '爬取成功';
-    // });
+    // this.ctx.body = '爬取成功';
+    con.forEach((item, index) => {
+      createCon[index] = this.ctx.service.zheye.create(con[index]);
+    });
+    // 执行所有操作;
+    Promise.all(createCon).then(() => {
+      this.ctx.body = '爬取成功';
+    });
     // await this.ctx.service.zheye.create(con[0]);
     // await this.ctx.service.zheye.create(con[1]);
     // await this.ctx.service.zheye.create(con[2]);

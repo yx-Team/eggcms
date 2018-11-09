@@ -17,6 +17,9 @@ class ZheyeController extends Controller {
       data,
     };
   }
+  async update() {
+
+  }
 }
 
 module.exports = ZheyeController;

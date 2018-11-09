@@ -1,7 +1,7 @@
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
-  const addTime = new Date().getTime().toString();
+  const addTime = new Date().getTime();
   const ZheyeCateSchema = Schema({
     title: {
       type: String,
@@ -19,8 +19,12 @@ module.exports = app => {
       type: Number,
       default: 1,
     },
-    add_time: {
-      type: String,
+    create_at: {
+      type: Number,
+      default: addTime,
+    },
+    update_at: {
+      type: Number,
       default: addTime,
     },
   });

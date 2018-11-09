@@ -51,9 +51,12 @@ class ZheyeController extends BaseController {
   async page() {
     const { limit, page } = this.ctx.request.query;
     const data = await this.ctx.service.zheye.find({ page, limit });
-    data.map(item => {
-      item.add_time = this.ctx.helper.timeFormat(item.add_time);
-      return item;
+    let newdata = [];
+    data.forEach(item => {
+      var newItem = JSON.parse(JSON.stringify(item));
+      newItem.update_at = this.ctx.helper.timeFormat(newItem.update_at);
+      newItem.create_at = this.ctx.helper.timeFormat(newItem.create_at);
+      newdata.push(newItem);
     });
     const count = await this.ctx.service.zheye.count();
 
@@ -61,7 +64,7 @@ class ZheyeController extends BaseController {
       code: 0,
       msg: '获取成功',
       count,
-      data,
+      data: newdata,
     };
   }
 

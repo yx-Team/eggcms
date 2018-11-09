@@ -20,23 +20,28 @@ module.exports = appInfo => {
     csrf: {
       // 判断是否需要 ignore 的方法，请求上下文 context 作为第一个参数
       // ignore: ctx => isInnerIp(ctx.ip),
-      enable: true,
+      enable: false,
     },
   };
   // mongoose
   config.mongoose = {
     client: {
-      url: 'mongodb://127.0.0.1:27017/cmsdb',
+      url: 'mongodb://admin:du123456@119.27.164.157:27017/cmsdb?authSource=admin',
+      // mongodb://admin:123456@localhost:27017/
       // url: 'mongodb://test:du123456@ds127843.mlab.com:27843/cmsdb',
       options: {},
     },
   };
   // 中间件
-  config.middleware = [ 'adminAuth' ];
+  config.middleware = [ 'adminAuth', 'local' ];
   // 匹配链接有/admin的路径，需要验证
   config.adminAuth = {
     enable: true,
     match: '/admin',
+  };
+  config.local = {
+    enable: true,
+    // match: '/api/user',
   };
   // 模版
   config.view = {
@@ -52,19 +57,17 @@ module.exports = appInfo => {
     //   ctx.body = 'error';
     //   ctx.status = 500;
     // },
-    html(err, ctx) {
-      // html hander
-      ctx.body = '<h3>error</h3>';
-      ctx.status = 500;
-    },
-    json(err, ctx) {
-      // json hander
-      ctx.body = { success: false, message: 'error' };
-      ctx.status = 500;
-    },
-    jsonp(err, ctx) {
-      // 一般来说，不需要特殊针对 jsonp 进行错误定义，jsonp 的错误处理会自动调用 json 错误处理，并包装成 jsonp 的响应格式
-    },
+    // html(err, ctx) {
+
+    //   ctx.body = '<h3>error</h3>';
+    //   ctx.status = 500;
+    // },
+    // json(err, ctx) {
+
+    //   ctx.body = { success: false, message: 'error' };
+    //   ctx.status = 500;
+    // },
+
   };
 
   // 七牛云配置

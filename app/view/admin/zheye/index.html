@@ -70,11 +70,8 @@
               return '<a href="' + res.link + '" target="_blank"><i class="layui-icon layui-icon-link"><i/></a>'
             }
           }
-          , {
-            field: 'add_time', title: '时间', width: 190, templet: function (res) {
-              return res.add_time
-            }
-          }
+          , {field: 'create_at', title: '创建时间', width: 190}
+          , {field: 'update_at', title: '更新时间', width: 190}
           , { field: 'status', title: '状态', width: 120, templet: '#switchTpl' }
           , { fixed: 'right', title: '操作', toolbar: '#operation', width: 120 }
         ]]

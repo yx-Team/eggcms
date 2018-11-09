@@ -57,11 +57,8 @@
           { field: 'sort', title: '排序', width: 80, edit: 'text' }
           , { field: '_id', title: 'ID', width: 220, unresize: true, sort: true }
           , { field: 'title', title: '标题', edit: 'text' }
-          , {
-            field: 'add_time', title: '时间', width: 190, templet: function (res) {
-              return res.add_time
-            }
-          }
+          , {field: 'create_at', title: '创建时间', width: 190}
+          , {field: 'update_at', title: '更新时间', width: 190}
           , { field: 'status', title: '状态', width: 120, templet: '#switchTpl' }
           , { fixed: 'right', title: '操作', toolbar: '#operation', width: 120 }
         ]]
