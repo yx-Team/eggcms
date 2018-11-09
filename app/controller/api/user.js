@@ -30,7 +30,7 @@ class UserController extends BaseController {
     }
     try {
       password = await this.ctx.service.tools.md5(password);
-      let username = await this.ctx.model.User.findOne({ username });
+      let hasUser = await this.ctx.model.User.findOne({ username });
       console.log(user);
       if (!user) {
 
