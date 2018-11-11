@@ -3,8 +3,8 @@
 const BaseController = require('../admin/base');
 const JWT = require('jsonwebtoken');
 
-// 定义创建接口的请求参数规则
-const createRule = {
+// 定义注册接口的请求参数规则
+const regRule = {
   username: { type: 'string', required: true, max: 18, min: 6 },
   password: { type: 'password', required: true, max: 18, min: 6 },
   repassword: { type: 'password', compare: 'password' },
@@ -16,10 +16,20 @@ const loginRule = {
   password: { type: 'password', required: true, max: 18, min: 6 },
 };
 class UserController extends BaseController {
+  /**
+   * router GET /api/user/login
+   * @description 登录界面
+   * @access public
+   */
   async login() {
-    console.log(this.config.secret);
     this.ctx.body = 'login';
+
   }
+  /**
+   * router POST /api/user/doLogin
+   * @description 登录ACTION
+   * @access public
+   */
   async doLogin() {
     // 验证表单
     this.ctx.validate(loginRule, this.ctx.request.body);
@@ -36,7 +46,7 @@ class UserController extends BaseController {
         username: user.username,
         email: user.email,
         isactive: user.isactive,
-        exp: Math.floor(Date.now() / 1000) + (20),
+        exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60),
       };
       const token = JWT.sign(payload, this.config.secret);
       this.ctx.body = {
@@ -46,22 +56,23 @@ class UserController extends BaseController {
       };
       return;
     }
-
-
-    // var token =
-    //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEyMzE0LCJleHAiOjE1NDIzNTg1MTEsImlhdCI6MTU0MTc1MzcxMX0.5XxpaWoj5XwVRXvfX5V0euukaGEJyKJhnJf7IOs4JTw';
-
-    // var decoded = JWT.verify(token, 'w530385371');
-    // console.log(decoded);
   }
   /**
-   * 注册
-   * /api/user/reg
-   * public
+   * router get /api/user/reg
+   * @description 注册界面
+   * @access public
    */
   async reg() {
+    this.ctx.body = '注册';
+  }
+  /**
+   * router POST /api/user/reg
+   * @description 注册Action
+   * @access public
+   */
+  async doReg() {
     // 验证表单
-    this.ctx.validate(createRule, this.ctx.request.body);
+    this.ctx.validate(regRule, this.ctx.request.body);
     let { username, password, email } = this.ctx.request.body;
     // 密码加密
     password = await this.ctx.service.tools.md5(password);
@@ -79,14 +90,15 @@ class UserController extends BaseController {
     }
     return this.error('用户已注册');
   }
-  async authCallback() {
-    this.ctx.body = {
-      success: true,
-      message: '登录成功',
-    };
-  }
+  /**
+   * router get /api/user/info
+   * @description 信息展示
+   * @access private
+   */
   async info() {
-    this.ctx.body = 'info';
+    const { authorization } = this.ctx.header;
+    const user = JWT.verify(authorization, this.config.secret);
+    this.ctx.body = user;
   }
 }
 

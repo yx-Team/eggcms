@@ -2,7 +2,6 @@ const JWT = require('jsonwebtoken');
 // jwt登录验证中间件
 module.exports = (options, app) => {
   return async function jwtAuth(ctx, next) {
-
     // 白名单
     const white = options.white;
     const currentPath = ctx.request.url;

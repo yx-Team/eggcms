@@ -47,11 +47,11 @@ module.exports = appInfo => {
     enable: true,
     match: '/api',
   };
-  // 统一错误处理
+  // jwt验证
   config.jwtAuth = {
     enable: true,
     // 过滤路由
-    white: [ '/api/user/reg', '/api/user/login', '/api/user/doLogin' ],
+    white: [ '/api/user/reg', '/api/user/doReg', '/api/user/login', '/api/user/doLogin' ],
     match: '/api',
   };
   // 模版
