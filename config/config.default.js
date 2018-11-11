@@ -15,6 +15,8 @@ module.exports = appInfo => {
     encrypt: true,
     renew: true, // 延迟有效期
   };
+  // 登录
+  config.secret = 'iuehtml';
   // 安全验证
   config.security = {
     csrf: {
@@ -33,15 +35,22 @@ module.exports = appInfo => {
     },
   };
   // 中间件
-  config.middleware = [ 'adminAuth', 'local' ];
+  config.middleware = [ 'adminAuth', 'errorHandler', 'jwtAuth' ];
   // 匹配链接有/admin的路径，需要验证
   config.adminAuth = {
     enable: true,
     match: '/admin',
   };
-  config.local = {
-    enable: false,
-    // match: '/api/user',
+
+  // 统一错误处理
+  config.errorHandler = {
+    enable: true,
+    match: '/api',
+  };
+  // 统一错误处理
+  config.jwtAuth = {
+    enable: true,
+    match: '/api',
   };
   // 模版
   config.view = {

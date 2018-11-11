@@ -7,6 +7,7 @@ module.exports = app => {
     username: {
       type: String,
       unique: true,
+      index:true
     },
     password: {
       type: String,
@@ -14,12 +15,15 @@ module.exports = app => {
     email: {
       type: String,
       unique: true,
+      index:true
     },
     token: {// 邮件激活码
       type: String,
+      default:'',
     },
     token_exptime: {// 激活码有效期
       type: Number,
+      default:0,
     },
     isactive: {// 激活状态(0:未激活，1：激活)
       type: Number,
