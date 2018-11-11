@@ -50,6 +50,8 @@ module.exports = appInfo => {
   // 统一错误处理
   config.jwtAuth = {
     enable: true,
+    // 过滤路由
+    white: [ '/api/user/reg', '/api/user/login', '/api/user/doLogin' ],
     match: '/api',
   };
   // 模版
