@@ -51,7 +51,7 @@ module.exports = appInfo => {
   config.jwtAuth = {
     enable: true,
     // 过滤路由
-    white: [ '/api/user/reg', '/api/user/doReg', '/api/user/login', '/api/user/doLogin' ],
+    white: [ '/api/user/reg', '/api/user/doReg', '/api/user/login', '/api/user/doLogin', '/api/zheye/list' ],
     match: '/api',
   };
   // 模版
@@ -59,6 +59,11 @@ module.exports = appInfo => {
     mapping: {
       '.html': 'ejs',
     },
+  };
+  // 配置跨域
+  config.cors = {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
   // 错误处理
   config.onerror = {
